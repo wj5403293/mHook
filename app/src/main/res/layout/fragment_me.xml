@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.qmuiteam.qmui.widget.QMUIWindowInsetLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:layout_marginTop="30dp">
+
+                    <LinearLayout
+                        android:id="@+id/login"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:layout_weight="1">
+
+                        <com.qmuiteam.qmui.widget.QMUIRadiusImageView
+                            android:id="@+id/icon"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:clickable="false"
+                            android:src="@color/blue"
+                            app:qmui_border_color="?attr/qmui_config_color_gray_6"
+                            app:qmui_border_width="3px"
+                            app:qmui_is_circle="true"
+                            app:qmui_selected_border_color="?attr/qmui_config_color_gray_4"
+                            app:qmui_selected_border_width="1px"
+                            app:qmui_selected_mask_color="?attr/qmui_config_color_gray_8" />
+
+                        <TextView
+                            android:id="@+id/name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="怜若雪"
+                            android:textColor="@color/blue"
+                            android:textSize="16dp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp">
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fitsSystemWindows="true">
+
+                        <com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView
+                            android:id="@+id/groupListView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </ScrollView>
+                </LinearLayout>
+            </LinearLayout>
+    </LinearLayout>
+
+</com.qmuiteam.qmui.widget.QMUIWindowInsetLayout>

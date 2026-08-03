@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.qmuiteam.qmui.widget.QMUIWindowInsetLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="cn.mhook.activity.hook.HookActivity"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <ImageView
+                android:id="@+id/addHook"
+                android:layout_width="25dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                app:srcCompat="@mipmap/add_p"
+                app:tint="@color/blue"
+                android:visibility="invisible"/>
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:text="自定义HOOK"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.arlib.floatingsearchview.FloatingSearchView
+                android:id="@+id/floating_search_view"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                app:floatingSearch_leftActionMode="showSearch"
+                app:floatingSearch_dismissOnOutsideTouch="true"
+                app:floatingSearch_searchHint="查询内容"
+                app:floatingSearch_showSearchKey="true"
+                app:floatingSearch_suggestionsListAnimDuration="250"
+                app:floatingSearch_dimBackground="false"
+                app:floatingSearch_close_search_on_keyboard_dismiss="false"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                    android:id="@+id/refresh_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/config_recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                <com.nightonke.boommenu.BoomMenuButton
+                    android:id="@+id/bmb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    app:bmb_normalColor="@android:color/white"
+                    app:bmb_highlightedColor="@android:color/darker_gray"
+                    app:bmb_buttonEnum="ham"
+                    app:bmb_piecePlaceEnum="piecePlace_ham_1"
+                    app:bmb_buttonPlaceEnum="buttonPlace_ham_1"
+                    app:bmb_pieceCornerRadius="2dp"
+                    android:layout_margin="15dp" />
+            </RelativeLayout>
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+</com.qmuiteam.qmui.widget.QMUIWindowInsetLayout>

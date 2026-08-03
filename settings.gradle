@@ -1,0 +1,2 @@
+rootProject.name='mHook'
+include ':app',':library'

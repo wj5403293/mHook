@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+
+    <color name="white">#FFFFFF</color>
+
+    <color name="green">#4CAF50</color>
+    <color name="blue">#2196F3</color>
+    <color name="red">#F44336</color>
+
+    <color name="qmui_config_color_50_pure_black">#444444</color>
+
+    
+    <color name="app_color_blue">#00A8E1</color>
+    <color name="app_color_blue_disabled">#8000A8E1</color>
+    <color name="app_color_blue_pressed">#c000A8E1</color>
+
+    <color name="app_color_blue_2">#31BDF3</color>
+    <color name="app_color_blue_2_disabled">#7F31BDF3</color>
+    <color name="app_color_blue_2_pressed">#7F31BDF3</color>
+
+    <color name="app_color_blue_3">#EBF9FF</color>
+    <color name="app_color_blue_3_disabled">#7FEBF9FF</color>
+    <color name="app_color_blue_3_pressed">#7FEBF9FF</color>
+
+
+    <color name="app_color_description">@color/qmui_config_color_gray_5</color>
+
+    <color name="bar_divider">#D4D6D8</color>
+    <color name="tab_panel_bg">#ffffff</color>
+    <color name="tab_panel_divider">@color/bar_divider</color>
+
+    
+    <color name="radiusImageView_border_color">@color/app_color_theme_2</color>
+    <color name="radiusImageView_selected_border_color">@color/app_color_theme_1</color>
+    <color name="radiusImageView_selected_mask_color">#7FEF5362</color>
+
+    
+
+    
+    <color name="colorHelper_square_alpha_background">@color/app_color_theme_4</color>
+    <color name="colorHelper_square_from_ratio_background">@color/app_color_blue</color>
+    <color name="colorHelper_square_to_ratio_background">@color/app_color_theme_3</color>
+
+    <color name="app_color_theme_1">#EF5362</color> 
+    <color name="app_color_theme_2">#FE6D4B</color> 
+    <color name="app_color_theme_3">#FFCF47</color> 
+    <color name="app_color_theme_4">#9FD661</color> 
+    <color name="app_color_theme_5">#3FD0AD</color> 
+    <color name="app_color_theme_6">#2BBDF3</color> 
+    <color name="app_color_theme_7">#5A9AEF</color> 
+    <color name="app_color_theme_8">#AC8FEF</color> 
+    <color name="app_color_theme_9">#EE85C1</color> 
+
+    <color name="chat">#559fca</color>
+    <color name="quote">#f0983c</color>
+    <color name="link">#5abb8b</color>
+    <color name="audio">#a67fc0</color>
+    <color name="photo">#d75f45</color>
+    <color name="text">#444444</color>
+    <color name="video">#748089</color>
+
+    <color name="fab">#529ecc</color>
+
+    <color name="text_color">#EBEFF1</color>
+
+
+    <color name="first_slide_background">#E91E63</color>
+    <color name="first_slide_buttons">#880E4F</color>
+
+    <color name="second_slide_background">#9C27B0</color>
+    <color name="second_slide_buttons">#4A148C</color>
+    <color name="text_">#1D1D1D</color>
+    <color name="third_slide_background">#009688</color>
+    <color name="third_slide_buttons">#004D40</color>
+
+    <color name="fourth_slide_background">#795548</color>
+    <color name="fourth_slide_buttons">#3E2723</color>
+
+    <color name="custom_slide_background">#3F51B5</color>
+    <color name="custom_slide_buttons">#1A237E</color>
+
+    
+    <item name="splash_background" type="color">@color/colorPrimary</item>
+
+    <color name="bgBackSideColor">#f4f0ff</color>
+    <color name="bgTitleLeft">#594691</color>
+    <color name="bgTitleRight">#ffffff</color>
+    <color name="bgContentTop">#594691</color>
+    <color name="bgContent">#ffffff</color>
+    <color name="contentDividerLine">#e0e0e0</color>
+    <color name="contentBadgeTitle">#a9a9a9</color>
+    <color name="titleBadgeTitle">#adafb1</color>
+    <color name="titleBadgeText">#adafb1</color>
+    <color name="mainTextColor">#ffffff</color>
+    <color name="btnRequest">#ffbf12</color>
+    <color name="black_overlay">#66000000</color>
+
+    
+    <color name="md_deep_orange_50">#FBE9E7</color>
+    <color name="md_deep_orange_100">#FFCCBC</color>
+    <color name="md_deep_orange_200">#FFAB91</color>
+    <color name="md_deep_orange_300">#FF8A65</color>
+    <color name="md_deep_orange_400">#FF7043</color>
+    <color name="md_deep_orange_500">#FF5722</color>
+    <color name="md_deep_orange_600">#F4511E</color>
+    <color name="md_deep_orange_700">#E64A19</color>
+    <color name="md_deep_orange_800">#D84315</color>
+    <color name="md_deep_orange_900">#BF360C</color>
+    <color name="md_deep_orange_A100">#FF9E80</color>
+    <color name="md_deep_orange_A200">#FF6E40</color>
+    <color name="md_deep_orange_A400">#FF3D00</color>
+    <color name="md_deep_orange_A700">#DD2600</color>
+
+
+
+</resources>
