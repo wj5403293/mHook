@@ -23,7 +23,7 @@ public class DialogActivity extends Activity {
         getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         new XPopup.Builder(this)
                 .hasShadowBg(false)
-                .moveUpToKeyboard(false) 
+                .moveUpToKeyboard(false) //如果不加这个，评论弹窗会移动到软键盘上面
                 .setPopupCallback(new XPopupCallback() {
                     @Override
                     public void onCreated() {

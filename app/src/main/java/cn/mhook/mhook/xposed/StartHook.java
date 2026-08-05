@@ -23,33 +23,33 @@ public class StartHook {
 
     public void init() throws IOException, ClassNotFoundException {
 
-      
+      /*  findAndHookMethod(Application.class, "attach", Context.class, new XC_MethodHook() {
+            @Override
+            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                Context c = (Context) param.args[0];
+                if (c!=null){
+                    context = c;
+                    jsonCfg.context = c;
+                    appCfg.context = context;
+                    AppCfg();
+                }
+            }
+        });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        XposedBridge.hookAllMethods(Activity.class, "onCreate", new XC_MethodHook() {
+            @Override
+            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                super.beforeHookedMethod(param);
+                Context c =(Context) param.thisObject;
+                if (c!=null){
+                    aContext =c;
+                    context = c;
+                    jsonCfg.context = c;
+                    appCfg.context = context;
+                    AppCfg();
+                }
+            }
+        });*/
         AppCfg();
     }
 
@@ -68,7 +68,7 @@ public class StartHook {
     }
 
     private void initHookPro() throws IOException, ClassNotFoundException {
-        
+        //保存可能的入口
         DexFile dexFile = new DexFile(loadPackageParam.appInfo.sourceDir);
         Enumeration<String> classNames = dexFile.entries();
         while (classNames.hasMoreElements()) {

@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 
 public class FilterXpInputStream extends InputStream {
-    private final byte[] mXposedBytes = "xposed".getBytes(); 
+    private final byte[] mXposedBytes = "xposed".getBytes(); // {120, 112, 111, 115, 101, 100}
     private final byte[] mReadBuffer = new byte[6];
     private final ByteArrayOutputStreamUtils mBuffer = new ByteArrayOutputStreamUtils();
     private final InputStream mStream;

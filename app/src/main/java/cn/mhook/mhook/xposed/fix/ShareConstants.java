@@ -1,9 +1,9 @@
 package cn.mhook.mhook.xposed.fix;
 
 import java.util.regex.Pattern;
-
-
-
+/**
+ * Created by zhangshaowen on 16/3/24.
+ */
 public class ShareConstants {
 
     public static final int BUFFER_SIZE = 16384;
@@ -15,7 +15,7 @@ public class ShareConstants {
     public static final String TINKER_ID = "TINKER_ID";
     public static final String NEW_TINKER_ID = "NEW_TINKER_ID";
 
-    
+    // Please keep it synchronized with the one defined in TypedValue.
     public static final String PKGMETA_KEY_IS_PROTECTED_APP = "is_protected_app";
 
     public static final String OLD_VERSION = "old";
@@ -55,7 +55,7 @@ public class ShareConstants {
     public static final String CHECK_DEX_OAT_EXIST_FAIL = "checkDexOptExist failed";
     public static final String CHECK_DEX_OAT_FORMAT_FAIL = "checkDexOptFormat failed";
 
-    
+    // public static final String CHECK_VM_PROPERTY_FAIL = "checkVmArtProperty failed";
 
 
     public static final String RES_META_FILE = "assets/res_meta.txt";
@@ -85,28 +85,28 @@ public class ShareConstants {
 
     public static final String META_SUFFIX = "meta.txt";
 
-    
-
-
+    /**
+     * multi process share
+     */
     public static final String TINKER_SHARE_PREFERENCE_CONFIG = "tinker_share_config";
     public static final String TINKER_ENABLE_CONFIG_PREFIX = "tinker_enable_";
 
-    
-
-
+    /**
+     * only for each process
+     */
     public static final String TINKER_OWN_PREFERENCE_CONFIG_PREFIX = "tinker_own_config_";
     public static final String TINKER_SAFE_MODE_COUNT_PREFIX = "safe_mode_count_";
     public static final int TINKER_SAFE_MODE_MAX_COUNT = 3;
 
 
-    
-
-
-
-
+    /**
+     * notification id, use to Increasing the patch process priority
+     * your app shouldn't use the same notification id.
+     * if you want to define it, use {@code TinkerPatchService.setTinkerNotificationId}
+     */
     public static final int TINKER_PATCH_SERVICE_NOTIFICATION = -1119860829;
 
-    
+    //resource type
     public static final int TYPE_PATCH_FILE = 1;
     public static final int TYPE_PATCH_INFO = 2;
     public static final int TYPE_DEX = 3;
@@ -126,7 +126,7 @@ public class ShareConstants {
     public static final int TINKER_DEX_AND_LIBRARY = TINKER_DEX_MASK | TINKER_NATIVE_LIBRARY_MASK | TINKER_ARKHOT_MASK;
     public static final int TINKER_ENABLE_ALL = TINKER_DEX_MASK | TINKER_NATIVE_LIBRARY_MASK | TINKER_RESOURCE_MASK | TINKER_ARKHOT_MASK;
 
-    
+    //load error code
     public static final int ERROR_LOAD_OK = 0;
     public static final int ERROR_LOAD_DISABLE = -1;
     public static final int ERROR_LOAD_PATCH_DIRECTORY_NOT_EXIST = -2;
@@ -149,7 +149,7 @@ public class ShareConstants {
     public static final int ERROR_LOAD_PATCH_VERSION_LIB_FILE_NOT_EXIST = -18;
     public static final int ERROR_LOAD_PATCH_REWRITE_PATCH_INFO_FAIL = -19;
     public static final int ERROR_LOAD_PATCH_UNKNOWN_EXCEPTION = -20;
-    
+    //resource
     public static final int ERROR_LOAD_PATCH_VERSION_RESOURCE_DIRECTORY_NOT_EXIST = -21;
     public static final int ERROR_LOAD_PATCH_VERSION_RESOURCE_FILE_NOT_EXIST = -22;
     public static final int ERROR_LOAD_PATCH_VERSION_RESOURCE_LOAD_EXCEPTION = -23;
@@ -158,15 +158,15 @@ public class ShareConstants {
 
     public static final int ERROR_LOAD_GET_INTENT_FAIL = -10000;
 
-    
-    
+    //load exception code
+    //recover error code
     public static final int ERROR_LOAD_EXCEPTION_UNKNOWN = -1;
     public static final int ERROR_LOAD_EXCEPTION_DEX = -2;
     public static final int ERROR_LOAD_EXCEPTION_RESOURCE = -3;
     public static final int ERROR_LOAD_EXCEPTION_UNCAUGHT = -4;
     public static final int ERROR_LOAD_EXCEPTION_COMPONENT_HOTPLUG = -5;
 
-    
+    //patch listener error code
     public static final int ERROR_PATCH_OK = 0;
     public static final int ERROR_PATCH_DISABLE = -1;
     public static final int ERROR_PATCH_NOTEXIST = -2;
@@ -177,7 +177,7 @@ public class ShareConstants {
     public static final int ERROR_PATCH_RETRY_COUNT_LIMIT = -7;
 
 
-    
+    //package check error code
     public static final int ERROR_PACKAGE_CHECK_OK = 0;
     public static final int ERROR_PACKAGE_CHECK_SIGNATURE_FAIL = -1;
     public static final int ERROR_PACKAGE_CHECK_PACKAGE_META_NOT_FOUND = -2;
@@ -189,7 +189,7 @@ public class ShareConstants {
     public static final int ERROR_PACKAGE_CHECK_RESOURCE_META_CORRUPTED = -8;
     public static final int ERROR_PACKAGE_CHECK_TINKERFLAG_NOT_SUPPORT = -9;
 
-    
+    // interpret error type
     public static final int TYPE_INTERPRET_OK = 0;
     public static final int TYPE_INTERPRET_GET_INSTRUCTION_SET_ERROR = 1;
     public static final int TYPE_INTERPRET_COMMAND_ERROR = 2;

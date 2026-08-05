@@ -105,20 +105,20 @@ public class EditHookActivity extends BaseActivity {
                     }
                 })
                 .subNormalText("解决部分应用HOOK失败"));
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
+        /*
+        bmb.addBuilder(new HamButton.Builder()
+                .normalImageRes(R.drawable.eagle)
+                .normalText("附加设置")
+                .listener(new OnBMClickListener() {
+                    @Override
+                    public void onBoomButtonClick(int index) {
+                        edit=null;
+                        Intent intent = new Intent();
+                        intent.setClass(EditHookActivity.this, SettingProActivity.class);
+                        startActivityForResult(intent, 1);
+                    }
+                })
+                .subNormalText("对应用程序设置的扩展"));*/
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

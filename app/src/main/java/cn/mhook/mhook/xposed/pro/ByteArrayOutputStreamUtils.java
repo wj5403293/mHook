@@ -6,19 +6,19 @@ import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 
 public class ByteArrayOutputStreamUtils extends OutputStream {
-    
+    // 将“字节数组输出流”转换成字节数组。
     private static final byte[] mNullByteArray = new byte[0];
-    
+    // 保存“字节数组输出流”数据的数组
     private byte[] mBuffer;
-    
+    // “字节数组输出流”的计数
     private int mCount;
 
-    
+    // 构造函数：默认创建的字节数组大小是32。
     public ByteArrayOutputStreamUtils() {
         this(32);
     }
 
-    
+    // 构造函数：创建指定数组大小的“字节数组输出流”
     public ByteArrayOutputStreamUtils(int size) {
         if (size < 0) {
             throw new IllegalArgumentException("Negative initial size: " + size);
@@ -133,27 +133,27 @@ public class ByteArrayOutputStreamUtils extends OutputStream {
         return mBuffer.length;
     }
 
-    
-    
+    // 确认“容量”。
+    // 若“实际容量 < minCapacity”，则增加“字节数组输出流”的容量
     private void ensureCapacity(int minCapacity) {
-        
+        // overflow-conscious code
         if (minCapacity - mBuffer.length > 0) {
             grow(minCapacity);
         }
     }
 
-    
+    // 增加“容量”。
     private void grow(int minCapacity) {
         int oldCapacity = mBuffer.length;
-        
+        // “新容量”的初始化 = “旧容量”x2
         int newCapacity = oldCapacity << 1;
-        
+        // 比较“新容量”和“minCapacity”的大小，并选取其中较大的数为“新的容量”。
         if (newCapacity - minCapacity < 0) {
             newCapacity = minCapacity;
         }
         if (newCapacity < 0) {
             if (minCapacity < 0) {
-                
+                // overflow
                 throw new OutOfMemoryError();
             }
             newCapacity = Integer.MAX_VALUE;
@@ -161,14 +161,14 @@ public class ByteArrayOutputStreamUtils extends OutputStream {
         mBuffer = Arrays.copyOf(mBuffer, newCapacity);
     }
 
-    
+    // 写入一个字节b到“字节数组输出流”中，并将计数+1
     public void write(int b) {
         ensureCapacity(mCount + 1);
         mBuffer[mCount] = (byte) b;
         mCount += 1;
     }
 
-    
+    // 写入字节数组b到“字节数组输出流”中。off是“写入字节数组b的起始位置”，len是写入的长度
     @Override
     public void write(byte b[], int off, int len) {
         if ((off < 0) || (off > b.length) || (len < 0) ||
@@ -180,12 +180,12 @@ public class ByteArrayOutputStreamUtils extends OutputStream {
         mCount += len;
     }
 
-    
+    // 写入输出流outb到“字节数组输出流”中。
     public void writeTo(OutputStream out) throws IOException {
         out.write(mBuffer, 0, mCount);
     }
 
-    
+    // 重置“字节数组输出流”的计数。
     public void reset() {
         mCount = 0;
     }
@@ -197,7 +197,7 @@ public class ByteArrayOutputStreamUtils extends OutputStream {
         return Arrays.copyOf(mBuffer, mCount);
     }
 
-    
+    // 返回“字节数组输出流”当前计数值
     public int size() {
         return mCount;
     }

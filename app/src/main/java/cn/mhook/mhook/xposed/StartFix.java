@@ -34,7 +34,7 @@ public class StartFix {
                 if (!RxFileTool.isFileExists(fixDir)) return;
                 Reflection.unseal(application);
                 int mode = MK.getCheck(H.pkg);
-                
+                // 模式四：AutoJS脚本覆盖热修复（仅覆盖assets/project下的脚本文件，不做dex热修复）
                 if (mode == 3) {
                     try {
                         copyAutoJsAssets(new ZipFile(fixDir), new File(application.getFilesDir(), "project"));

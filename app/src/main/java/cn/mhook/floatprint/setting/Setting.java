@@ -20,9 +20,9 @@ public class Setting extends QMUIFragment {
     private Handler handler;
     private QMUIGroupListView mGroupListView;
 
-    
-
-
+    /**
+     * onCreateView
+     */
     @Override
     protected View onCreateView() {
         root = LayoutInflater.from(getContext()).inflate(R.layout.float_setting, null);

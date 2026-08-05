@@ -17,15 +17,15 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 import static cn.mhook.mhook.xposed.utils.mHookCfg.dumpDir;
 
-
-
-
-
-
-
-
-
-
+/**
+ * 纯 Java 内存脱壳
+ *
+ * 三层方案：
+ * 1. hook InMemoryDexClassLoader 构造方法，直接拷贝 ByteBuffer/ByteBuffer[] 中的 dex
+ * 2. hook DexClassLoader / DexFile 构造方法，拷贝磁盘上的 dex 文件
+ * 3. hook ClassLoader.loadClass 兜底，通过 Class->DexCache->DexFile->mCookie
+ *    拿到 ArtDexFile 内存地址，用 sun.misc.Unsafe 读出完整 dex
+ */
 public class MemoryDexDumper {
 
     private static final byte[] DEX_MAGIC = {0x64, 0x65, 0x78, 0x0A, 0x30, 0x33, 0x35, 0x00};
@@ -53,7 +53,7 @@ public class MemoryDexDumper {
         hookLoadClass(lpparam);
     }
 
-    
+    /** 第一层：内存 dex */
     private static void hookInMemoryDexClassLoader(final XC_LoadPackage.LoadPackageParam lpparam) {
         try {
             XposedHelpers.findAndHookConstructor("dalvik.system.InMemoryDexClassLoader", lpparam.classLoader,
@@ -81,7 +81,7 @@ public class MemoryDexDumper {
         }
     }
 
-    
+    /** 第二层：磁盘 dex */
     private static void hookDexClassLoader(final XC_LoadPackage.LoadPackageParam lpparam) {
         try {
             XposedHelpers.findAndHookConstructor("dalvik.system.DexClassLoader", lpparam.classLoader,
@@ -129,7 +129,7 @@ public class MemoryDexDumper {
         }
     }
 
-    
+    /** 第三层：loadClass 兜底，从内存读出 ArtDexFile */
     private static void hookLoadClass(final XC_LoadPackage.LoadPackageParam lpparam) {
         try {
             XposedHelpers.findAndHookMethod(ClassLoader.class, "loadClass", String.class, boolean.class,
@@ -334,7 +334,7 @@ public class MemoryDexDumper {
         XposedBridge.log("MemoryDexDumper dump: " + file.getName() + " size=" + data.length);
     }
 
-    
+    /** 内存读取封装：优先 sun.misc.Unsafe，失败回退 /proc/self/mem，避免隐藏 API 限制 */
     private static final class UnsafeAccess {
         private static Object unsafe;
         private static Method getLong;

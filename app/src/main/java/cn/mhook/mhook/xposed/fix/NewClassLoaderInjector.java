@@ -9,9 +9,9 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 
-
-
-
+/**
+ * Created by tangyinsheng on 2019-10-31.
+ */
 final class NewClassLoaderInjector {
     public static ClassLoader inject(Application app, ClassLoader oldClassLoader, File dexOptDir, List<File> patchedDexes) throws Throwable {
         final String[] patchedDexPaths = new String[patchedDexes.size()];
@@ -93,7 +93,7 @@ final class NewClassLoaderInjector {
                     findField(drawableInflater.getClass(), "mClassLoader").set(drawableInflater, classLoader);
                 }
             } catch (Throwable ignored) {
-                
+                // Ignored.
             }
         }
     }

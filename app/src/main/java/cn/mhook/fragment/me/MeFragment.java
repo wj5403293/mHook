@@ -14,9 +14,9 @@ public class MeFragment extends QMUIFragment {
 
     private View root;
 
-    
-
-
+    /**
+     * onCreateView
+     */
     @Override
     protected View onCreateView() {
         root = LayoutInflater.from(getContext()).inflate(R.layout.fragment_me, null);

@@ -131,11 +131,11 @@ public class FloatActivity {
         };
         EasyFloat.with(activity)
                 .setLayout(R.layout.float_layout,onInvokeView)
-                
+                // 设置浮窗显示类型，默认只在当前Activity显示，可选一直显示、仅前台显示、仅后台显示
                 .setShowPattern(ShowPattern.ALL_TIME)
-                
+                // 设置吸附方式，共15种模式，详情参考SidePattern
                 .setSidePattern(SidePattern.RESULT_HORIZONTAL)
-                
+                // 设置宽高是否充满父布局，直接在xml设置match_parent属性无效
                 .setMatchParent(true,false)
                 .setTag("print")
                 .setDragEnable(false)
@@ -200,9 +200,9 @@ public class FloatActivity {
         };
         EasyFloat.with(activity)
                 .setLayout(R.layout.float_print_icon,onInvokeView)
-                
+                // 设置浮窗显示类型，默认只在当前Activity显示，可选一直显示、仅前台显示、仅后台显示
                 .setShowPattern(ShowPattern.ALL_TIME)
-                
+                // 设置吸附方式，共15种模式，详情参考SidePattern
                 .setSidePattern(SidePattern.RESULT_HORIZONTAL)
                 .setTag("icon")
                 .setAppFloatAnimator(null)

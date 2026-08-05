@@ -4,9 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-
-
-
+/**
+ * Created by cgspine on 2018/1/14.
+ */
 
 public class QDPreferenceManager {
     private static SharedPreferences sPreferences;

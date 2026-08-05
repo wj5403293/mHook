@@ -20,34 +20,34 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 
 public class HookLoader implements IXposedHookLoadPackage, IXposedHookZygoteInit {
-    
-    
-
-
+    //按照实际使用情况修改下面几项的值
+    /**
+     * 当前Xposed模块的包名,方便寻找apk文件
+     */
     private final static String modulePackageName = "cn.mhook.mhook";
 
-    
-
-
+    /**
+     * 实际hook逻辑处理类
+     */
     private final String handleHookClass = XposedMain.class.getName();
-    
-
-
+    /**
+     * 实际hook逻辑处理类的入口方法
+     */
     private final String handleHookMethod = "handleLoadPackage";
 
     private final String initMethod = "initZygote";
 
     private IXposedHookZygoteInit.StartupParam startupparam;
 
-    
-
-
-
-
-
+    /**
+     * 重定向handleLoadPackage函数前会执行initZygote
+     *
+     * @param loadPackageParam
+     * @throws Throwable
+     */
     @Override
     public void handleLoadPackage(final XC_LoadPackage.LoadPackageParam loadPackageParam) throws Throwable {
-        
+        // 排除系统应用
         if (loadPackageParam.appInfo == null ||
                 (loadPackageParam.appInfo.flags & (ApplicationInfo.FLAG_SYSTEM | ApplicationInfo.FLAG_UPDATED_SYSTEM_APP)) == 1) {
             return;
@@ -57,34 +57,34 @@ public class HookLoader implements IXposedHookLoadPackage, IXposedHookZygoteInit
         try {
             cls.getDeclaredMethod(initMethod, startupparam.getClass()).invoke(instance, startupparam);
         }catch (NoSuchMethodException e){
-            
+            // 找不到initZygote方法
         }
         cls.getDeclaredMethod(handleHookMethod, loadPackageParam.getClass()).invoke(instance, loadPackageParam);
 
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        /*
+        //将loadPackageParam的classloader替换为宿主程序Application的classloader,解决宿主程序存在多个.dex文件时,有时候ClassNotFound的问题
+        XposedHelpers.findAndHookMethod(Application.class, "attach", Context.class, new XC_MethodHook() {
+            @Override
+            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                Context context = (Context) param.args[0];
+                loadPackageParam.classLoader = context.getClassLoader();
+                Class<?> cls = getApkClass(context, modulePackageName, handleHookClass);
+                Object instance = cls.newInstance();
+                try {
+                    cls.getDeclaredMethod(initMethod, startupparam.getClass()).invoke(instance, startupparam);
+                }catch (NoSuchMethodException e){
+                    // 找不到initZygote方法
+                }
+                cls.getDeclaredMethod(handleHookMethod, loadPackageParam.getClass()).invoke(instance, loadPackageParam);
+            }
+        });*/
     }
 
-    
-
-
-
-
+    /**
+     * 实现initZygote，保存启动参数。
+     *
+     * @param startupParam
+     */
     @Override
     public void initZygote(IXposedHookZygoteInit.StartupParam startupParam) {
         this.startupparam = startupParam;
@@ -123,18 +123,18 @@ public class HookLoader implements IXposedHookLoadPackage, IXposedHookZygoteInit
     private File findApkFile(String packageName){
 
         String mApkFilePath = null;
-        
+        //查找apk路径
         if (mApkFilePath == null){
-            
+            //1、从 /data/app/com.lanshifu.xposeddemo-1.apk 找
             mApkFilePath = String.format("/data/app/%s-%s.apk", packageName, 1);
             if (!new File(mApkFilePath).exists()) {
-                
+                //2、从 /data/app/com.lanshifu.xposeddemo-2.apk 找
                 mApkFilePath = String.format("/data/app/%s-%s.apk", packageName, 2);
                 if (!new File(mApkFilePath).exists()) {
-                    
+                    //3、从 /data/app/com.lanshifu.xposeddemo-1/base.apk 找
                     mApkFilePath = String.format("/data/app/%s-%s/base.apk", packageName, 1);
                     if (!new File(mApkFilePath).exists()) {
-                        
+                        //4、从 /data/app/com.lanshifu.xposeddemo-2/base.apk 找
                         mApkFilePath = String.format("/data/app/%s-%s/base.apk", packageName, 2);
                         if (!new File(mApkFilePath).exists()) {
                             mApkFilePath = null;
@@ -146,13 +146,13 @@ public class HookLoader implements IXposedHookLoadPackage, IXposedHookZygoteInit
         return new File(mApkFilePath);
     }
 
-    
-
-
-
-
-
-
+    /**
+     * 根据包名构建目标Context,并调用getPackageCodePath()来定位apk
+     *
+     * @param context           context参数
+     * @param modulePackageName 当前模块包名
+     * @return apk file
+     */
     private File findApkFile(Context context, String modulePackageName) {
         if (context == null) {
             return null;

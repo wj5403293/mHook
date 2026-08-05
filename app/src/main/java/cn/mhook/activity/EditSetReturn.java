@@ -101,8 +101,8 @@ public class EditSetReturn extends BaseActivity {
         Bundle bundle = new Bundle();
         bundle.putString("data",hookJson.toJSONString());
         intent.putExtras(bundle);
-        setResult(2, intent);
-        finish();
+        setResult(2, intent);//返回值调用函数，其中2为resultCode，返回值的标志
+        finish();//传值结束
     }
 
     private void putData(){
@@ -143,9 +143,9 @@ public class EditSetReturn extends BaseActivity {
         boolean isMatch = Pattern.matches(pattern, method);
         if (isMatch){
             String methodName = "";
-            
+            // 创建 Pattern 对象
             Pattern r = Pattern.compile("(.*?)\\(");
-            
+            // 现在创建 matcher 对象
             Matcher m = r.matcher(method);
             if (m.find( )) {
                 methodName = m.group(1);
@@ -155,7 +155,7 @@ public class EditSetReturn extends BaseActivity {
 
             String parms = "";
             Pattern r1 = Pattern.compile("\\((.*?)\\)");
-            
+            // 现在创建 matcher 对象
             Matcher m1 = r1.matcher(method);
             if (m1.find( )) {
                 parms = m1.group(1);
@@ -165,7 +165,7 @@ public class EditSetReturn extends BaseActivity {
 
             String retType = "";
             Pattern r2 = Pattern.compile("\\)(.*);");
-            
+            // 现在创建 matcher 对象
             Matcher m2 = r2.matcher(method);
             if (m2.find( )) {
                 retType = m2.group(1);

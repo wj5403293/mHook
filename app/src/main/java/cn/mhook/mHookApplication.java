@@ -40,8 +40,8 @@ public class mHookApplication extends Application {
         appCfg.context = this;
         RxTool.init(this);
         CrashReport.UserStrategy strategy = new CrashReport.UserStrategy(this);
-        strategy.setAppVersion(RxAppTool.getAppVersionName(this));      
-        strategy.setAppPackageName(getPackageName());  
+        strategy.setAppVersion(RxAppTool.getAppVersionName(this));      //App的版本
+        strategy.setAppPackageName(getPackageName());  //App的包名
         Bugly.init(this, "d254101b57", false, strategy);
         su.init(this);
     }

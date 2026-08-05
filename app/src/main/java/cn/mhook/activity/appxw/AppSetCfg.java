@@ -73,42 +73,42 @@ public class AppSetCfg extends BaseActivity {
         QMUIGroupListView.newSection(this)
                 .setTitle("数据")
                 .addItemView(getItem("访问存储操作","file"),getOnClick())
-                .addItemView(getItem("JSON添加","putJson"),getOnClick())
-
-
-
-
-
+                .addItemView(getItem("JSON添加","putJson"),getOnClick())/*
+                .addItemView(getItem("SharedPreference操作","sp"),getOnClick())
+                .addItemView(getItem("SQLite读取操作","sql_read"),getOnClick())
+                .addItemView(getItem("SQLite写入操作","sql_write"),getOnClick())
+                .addItemView(getItem("SQLite删除操作","sql_del"),getOnClick())
+                .addItemView(getItem("SQLite更新操作","sql_update"),getOnClick())*/
                 .addTo(mGroupListView);
-                
-
-
-
-
-
-
-
-
-
+                /*
+        QMUIGroupListView.newSection(this)
+                .setTitle("敏感")
+                .addItemView(getItem("读取剪切板","read_clip"),getOnClick())
+                .addItemView(getItem("写入剪切板","write_clip"),getOnClick())
+                .addItemView(getItem("获取手机信息","read_phone_info"),getOnClick())
+                .addItemView(getItem("获取位置信息","read_pos"),getOnClick())
+                .addItemView(getItem("读取短信","read_sms"),getOnClick())
+                .addItemView(getItem("发送短信","send_sms"),getOnClick())
+                .addTo(mGroupListView);*/
         QMUIGroupListView.newSection(this)
                 .setTitle("网络")
                 .addItemView(getItem("代理检测及屏蔽","cProperty"),getOnClick())
-               
-
-
-
-
-
-
+               /* .addItemView(getItem("创建VPN","new_vpn"),getOnClick())
+                .addItemView(getItem("Okhttp3","okhttp3"),getOnClick())
+                .addItemView(getItem("UDP发送","send_udp"),getOnClick())
+                .addItemView(getItem("UDP监听","bind_udp"),getOnClick())
+                .addItemView(getItem("TCP发送","send_tcp"),getOnClick())
+                .addItemView(getItem("TCP监听","bind_tcp"),getOnClick())
+                .addItemView(getItem("WebView访问","webview"),getOnClick())*/
+                .addTo(mGroupListView);/*
+        QMUIGroupListView.newSection(this)
+                .setTitle("加解密")
+                .addItemView(getItem("常用算法","crypto"),getOnClick())
                 .addTo(mGroupListView);
-
-
-
-
-
-
-
-
+        QMUIGroupListView.newSection(this)
+                .setTitle("Xposed相关")
+                .addItemView(getItem("被hook检测", "beHook"),getHookClick())
+                .addTo(mGroupListView);*/
     }
 
     private void setHookEnable(String key,Boolean enable){
@@ -135,11 +135,11 @@ public class AppSetCfg extends BaseActivity {
     private View.OnClickListener getOnClick(){
         return new View.OnClickListener(){
 
-            
-
-
-
-
+            /**
+             * Called when a view has been clicked.
+             *
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v) {
                 QMUICommonListItemView q =  (QMUICommonListItemView)v;

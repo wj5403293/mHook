@@ -30,15 +30,15 @@ public class SharePatchFileUtil {
 
     private static char[] hexDigits = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
-    
-
-
-
-
+    /**
+     * data dir, such as /data/data/tinker.sample.android/tinker
+     * @param context
+     * @return
+     */
     public static File getPatchDirectory(Context context) {
         ApplicationInfo applicationInfo = context.getApplicationInfo();
         if (applicationInfo == null) {
-            
+            // Looks like running on a test Context, so just return without patching.
             return null;
         }
 
@@ -48,7 +48,7 @@ public class SharePatchFileUtil {
     public static File getPatchTempDirectory(Context context) {
         ApplicationInfo applicationInfo = context.getApplicationInfo();
         if (applicationInfo == null) {
-            
+            // Looks like running on a test Context, so just return without patching.
             return null;
         }
 
@@ -119,9 +119,9 @@ public class SharePatchFileUtil {
 
     }
 
-    
-
-
+    /**
+     * Closes the given {@code obj}. Suppresses any exceptions.
+     */
     @SuppressLint("NewApi")
     public static void closeQuietly(Object obj) {
         if (obj == null) return;
@@ -129,19 +129,19 @@ public class SharePatchFileUtil {
             try {
                 ((Closeable) obj).close();
             } catch (Throwable ignored) {
-                
+                // Ignored.
             }
         } else if (Build.VERSION.SDK_INT >= 19 && obj instanceof AutoCloseable) {
             try {
                 ((AutoCloseable) obj).close();
             } catch (Throwable ignored) {
-                
+                // Ignored.
             }
         } else if (obj instanceof ZipFile) {
             try {
                 ((ZipFile) obj).close();
             } catch (Throwable ignored) {
-                
+                // Ignored.
             }
         } else {
             throw new IllegalArgumentException("obj: " + obj + " cannot be closed.");
@@ -154,12 +154,12 @@ public class SharePatchFileUtil {
 
 
 
-    
-
-
-
-
-
+    /**
+     * get directory size
+     *
+     * @param directory
+     * @return
+     */
     public static long getFileOrDirectorySize(File directory) {
         if (directory == null || !directory.exists()) {
             return 0;
@@ -226,9 +226,9 @@ public class SharePatchFileUtil {
     }
 
 
-    
-
-
+    /**
+     * Returns whether the file is a valid file.
+     */
     public static boolean verifyFileMd5(File file, String md5) {
         if (md5 == null) {
             return false;
@@ -249,10 +249,10 @@ public class SharePatchFileUtil {
         return fileName.endsWith(ShareConstants.DEX_SUFFIX);
     }
 
-    
-
-
-
+    /**
+     * Returns whether the dex file is a valid file.
+     * dex may wrap with jar
+     */
     public static boolean verifyDexFileMd5(File file, String md5) {
         return verifyDexFileMd5(file, ShareConstants.DEX_IN_JAR, md5);
     }
@@ -261,7 +261,7 @@ public class SharePatchFileUtil {
         if (file == null || md5 == null || entryName == null) {
             return false;
         }
-        
+        //if it is not the raw dex, we check the stream instead
         String fileMd5 = "";
 
         if (isRawDexFile(file.getName())) {
@@ -271,7 +271,7 @@ public class SharePatchFileUtil {
             try {
                 dexJar = new ZipFile(file);
                 ZipEntry classesDex = dexJar.getEntry(entryName);
-                
+                // no code
                 if (null == classesDex) {
                     Log.e(TAG, "There's no entry named: " + ShareConstants.DEX_IN_JAR + " in " + file.getAbsolutePath());
                     return false;
@@ -324,11 +324,11 @@ public class SharePatchFileUtil {
         }
     }
 
-    
-
-
-
-
+    /**
+     * for faster, read and get the contents
+     *
+     * @throws IOException
+     */
     public static String loadDigestes(JarFile jarFile, JarEntry je) throws Exception {
         InputStream bis = null;
         StringBuilder sb = new StringBuilder();
@@ -347,12 +347,12 @@ public class SharePatchFileUtil {
         return sb.toString();
     }
 
-    
-
-
-
-
-
+    /**
+     * Get the md5 for inputStream.
+     * This method cost less memory. It read bufLen bytes from the FileInputStream once.
+     *
+     * @param is
+     */
     public final static String getMD5(final InputStream is) {
         if (is == null) {
             return null;
@@ -398,11 +398,11 @@ public class SharePatchFileUtil {
         }
     }
 
-    
-
-
-
-
+    /**
+     * Get the md5 for the file. call getMD5(FileInputStream is, int bufLen) inside.
+     *
+     * @param file
+     */
     public static String getMD5(final File file) {
         if (file == null || !file.exists()) {
             return null;

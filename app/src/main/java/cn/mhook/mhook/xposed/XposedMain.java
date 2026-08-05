@@ -50,7 +50,7 @@ public class XposedMain implements IXposedHookLoadPackage, IXposedHookZygoteInit
         H.pkg = loadPackageParam.packageName;
         mHookCfg.init();
         if (!RxFileTool.fileExists(mDir)&&!hasCfg()) return;
-        try { savaLog(); }catch (Throwable e){} 
+        try { savaLog(); }catch (Throwable e){} //打印日志
         Dialog.init();
         try {
             findAndHookMethod(Application.class, "attach", Context.class, new XC_MethodHook() {
@@ -79,7 +79,7 @@ public class XposedMain implements IXposedHookLoadPackage, IXposedHookZygoteInit
 
         }
 
-        try {  
+        try {  //热修复
             H.systemContext = getSystemContext();
             H.context = getSystemContext();
         }catch (Throwable e){

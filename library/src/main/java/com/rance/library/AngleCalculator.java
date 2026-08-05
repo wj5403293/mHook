@@ -1,20 +1,20 @@
 package com.rance.library;
 
-
-
-
-
+/**
+ * 作者：Rance on 2016/11/10 16:41
+ * 邮箱：rance935@163.com
+ */
 public class AngleCalculator {
 
     private double startAngleRadians;
     private double averageAngleRadians;
     private boolean angleStartEqualsEnd;
 
-    
-
-
-
-
+    /**
+     * @param startAngleDegree the value of the attribute aebStartAngleDegree
+     * @param endAngleDegree the value of the attribute aebEndAngleDegree
+     * @param expandButtonCount the count of buttons that will expand
+     */
     public AngleCalculator(float startAngleDegree, float endAngleDegree, int expandButtonCount) {
         angleStartEqualsEnd = (endAngleDegree - startAngleDegree) == 0;
         startAngleDegree = startAngleDegree % 360;
@@ -27,11 +27,11 @@ public class AngleCalculator {
         }
     }
 
-    
-
-
-
-
+    /**
+     * @param radius the sum of main button radius and sub button radius and the px value of attribute aebButtonGapDp
+     * @param buttonIndex button index, count from startAngle to endAngle, value is 1 to expandButtonCount
+     * @return the px distance in x direction that the button should move when expand
+     */
     public int getMoveX(int radius, int buttonIndex) {
         double angle =  getCurrentAngle(buttonIndex);
         int moveX;
@@ -54,11 +54,11 @@ public class AngleCalculator {
         return moveY;
     }
 
-    
-
-
-
-
+    /**
+     * regulate averageAngleRadians if endAngleDegree - startAngleDegree = 360 to avoid the first button covers the last button
+     * @param endAngleRadians end angle in radians unit
+     * @param expandButtonCount the count of buttons that will expand
+     */
     private void regulateAverageAngle(double endAngleRadians, int expandButtonCount) {
         if (!angleStartEqualsEnd && startAngleRadians == endAngleRadians) {
             double tmp = 2 * Math.PI / expandButtonCount;
@@ -70,10 +70,10 @@ public class AngleCalculator {
         }
     }
 
-    
-
-
-
+    /**
+     * @param buttonIndex button index, count from startAngle to endAngle, value is 1 to expandButtonCount
+     * @return the angle from first button to the buttonIndex button
+     */
     private double getCurrentAngle(int buttonIndex) {
         return startAngleRadians + averageAngleRadians * (buttonIndex - 1);
     }

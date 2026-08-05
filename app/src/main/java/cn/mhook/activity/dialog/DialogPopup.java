@@ -28,9 +28,9 @@ public class DialogPopup extends BottomPopupView {
     protected void onCreate() {
         super.onCreate();
         TextView viewInfo = findViewById(R.id.viewInfo);
-      
+      //  viewInfo.setText(data.toJSONString());
     }
-    
+    // 最大高度为Window的0.85
     @Override
     protected int getMaxHeight() {
         return (int) (XPopupUtils.getWindowHeight(getContext())*.55f);

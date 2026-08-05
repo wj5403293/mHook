@@ -1,8 +1,8 @@
-# mHook管理器
+﻿# mHook管理器
 
 基于 **Xposed / LSPosed 框架**的安卓应用行为分析工具。用于分析应用运行时的系统 API 调用，跟踪可疑方法，并通过可视化方式快速创建 Xposed Hook 代码，帮助检测应用可能存在的安全隐患与漏洞。
 
-> 版本：1.4 (versionCode 14) ｜ 最低系统：Android 5.1 (API 22) ｜ 目标系统：Android 14 (API 34)
+> 版本：1.4.1 (versionCode 14) ｜ 最低系统：Android 5.1 (API 22) ｜ 目标系统：Android 14 (API 34)
 
 ## 主要功能
 

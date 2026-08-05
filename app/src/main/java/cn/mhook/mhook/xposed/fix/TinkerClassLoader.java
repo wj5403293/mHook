@@ -10,9 +10,9 @@ import java.util.NoSuchElementException;
 
 import dalvik.system.BaseDexClassLoader;
 
-
-
-
+/**
+ * Created by tomystang on 2020-01-09.
+ */
 @SuppressLint("NewApi")
 public final class TinkerClassLoader extends BaseDexClassLoader {
     private final ClassLoader mOriginAppClassLoader;
@@ -39,7 +39,7 @@ public final class TinkerClassLoader extends BaseDexClassLoader {
 
     @Override
     public URL getResource(String name) {
-        
+        // The lookup order we use here is the same as for classes.
         URL resource = Object.class.getClassLoader().getResource(name);
         if (resource != null) {
             return resource;

@@ -43,7 +43,7 @@ public class FirstProvider extends BaseNodeProvider {
     public void convert(@NotNull BaseViewHolder helper, @NotNull BaseNode data, @NotNull List<?> payloads) {
         for (Object payload : payloads) {
             if (payload instanceof Integer && (int) payload == XPXWAdapter.EXPAND_COLLAPSE_PAYLOAD) {
-                
+                // 增量刷新，使用动画变化箭头
                 setArrowSpin(helper, data, true);
             }
         }

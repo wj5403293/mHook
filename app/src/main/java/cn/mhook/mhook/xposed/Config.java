@@ -16,12 +16,12 @@ import static cn.mhook.mhook.xposed.utils.mHookCfg.SettingDir;
 public class Config {
 
     public static JSONArray getJsonCfg(){
-       
-
-
-
-
-
+       /* if (context!=null){
+            JSONArray ret = cn.mhook.mhook.contentprovider.jsonCfg.getAllCfgByPkg(pkg);
+            return ret.isEmpty()?getJsonCfgByPatch():ret;
+        }else {
+            return getJsonCfgByPatch();
+        }*/
         return getJsonCfgByPatch();
     }
 

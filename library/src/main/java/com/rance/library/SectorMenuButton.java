@@ -38,10 +38,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-
-
-
+/**
+ * 作者：Rance on 2016/11/10 16:41
+ * 邮箱：rance935@163.com
+ */
 public class SectorMenuButton extends View implements ValueAnimator.AnimatorUpdateListener {
     private List<ButtonData> buttonDatas;
     private Map<ButtonData, RectF> buttonRects;
@@ -50,7 +50,7 @@ public class SectorMenuButton extends View implements ValueAnimator.AnimatorUpda
     private static final int BUTTON_SHADOW_COLOR = 0xff000000;
     private static final int BUTTON_SHADOW_ALPHA = 32;
 
-    
+    //初始化ButtonData默认值
     private static final int DEFAULT_EXPAND_ANIMATE_DURATION = 225;
     private static final int DEFAULT_ROTATE_ANIMATE_DURATION = 300;
     private static final int DEFAULT_BUTTON_GAP_DP = 25;
@@ -142,17 +142,17 @@ public class SectorMenuButton extends View implements ValueAnimator.AnimatorUpda
         init(context, attrs);
     }
 
-    
-
-
-
-
+    /**
+     * 初始化
+     * @param context
+     * @param attrs
+     */
     private void init(Context context, AttributeSet attrs) {
         paint = new Paint();
         paint.setAntiAlias(true);
         paint.setStyle(Paint.Style.FILL);
 
-        
+        //得到XML自定义属性
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.SectorMenuButton);
         startAngle = ta.getInteger(R.styleable.SectorMenuButton_aebStartAngleDegree, DEFAULT_START_ANGLE);
         endAngle = ta.getInteger(R.styleable.SectorMenuButton_aebEndAngleDegree, DEFAULT_END_ANGLE);
@@ -178,7 +178,7 @@ public class SectorMenuButton extends View implements ValueAnimator.AnimatorUpda
         blurRadius = ta.getFloat(R.styleable.SectorMenuButton_aebBlurRadius, DEFAULT_BLUR_RADIUS);
         ta.recycle();
 
-        
+        //模糊处理
         if (blurBackground) {
             blur = new Blur();
             blurImageView = new ImageView(getContext());
@@ -201,9 +201,9 @@ public class SectorMenuButton extends View implements ValueAnimator.AnimatorUpda
         initAnimators();
     }
 
-    
-
-
+    /**
+     * 注册监听视图树的观察者(observer)
+     */
     private void initViewTreeObserver() {
         ViewTreeObserver observer = getViewTreeObserver();
         observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -215,14 +215,14 @@ public class SectorMenuButton extends View implements ValueAnimator.AnimatorUpda
         });
     }
 
-    
-
-
+    /**
+     * 初始化动画
+     */
     private void initAnimators() {
         overshootInterpolator = new OvershootInterpolator();
         anticipateInterpolator = new AnticipateInterpolator();
 
-        
+        //打开菜单动画
         expandValueAnimator = ValueAnimator.ofFloat(0, 1);
         expandValueAnimator.setDuration(expandAnimDuration);
         expandValueAnimator.setInterpolator(overshootInterpolator);
@@ -241,7 +241,7 @@ public class SectorMenuButton extends View implements ValueAnimator.AnimatorUpda
             }
         });
 
-        
+        //关闭菜单动画
         collapseValueAnimator = ValueAnimator.ofFloat(1, 0);
         collapseValueAnimator.setDuration(expandAnimDuration);
         collapseValueAnimator.setInterpolator(anticipateInterpolator);
@@ -272,7 +272,7 @@ public class SectorMenuButton extends View implements ValueAnimator.AnimatorUpda
             return;
         }
 
-        
+        //主菜单旋转动画
         rotateValueAnimator = ValueAnimator.ofFloat(0, 1);
         rotateValueAnimator.setDuration(rotateAnimDuration);
         rotateValueAnimator.addUpdateListener(this);
@@ -286,26 +286,26 @@ public class SectorMenuButton extends View implements ValueAnimator.AnimatorUpda
         });
     }
 
-    
+    //所有按钮的监听事件
     public void setButtonEventListener(ButtonEventListener listener) {
         buttonEventListener = listener;
     }
 
-    
+    //设置打开菜单的插值器
     public void setExpandAnimatorInterpolator(Interpolator interpolator) {
         if (interpolator != null) {
             expandValueAnimator.setInterpolator(interpolator);
         }
     }
 
-    
+    //设置关闭菜单的插值器
     public void setCollapseAnimatorInterpolator(Interpolator interpolator) {
         if (interpolator != null) {
             collapseValueAnimator.setInterpolator(interpolator);
         }
     }
 
-    
+    //按钮初始化
     public SectorMenuButton setButtonDatas(List<ButtonData> buttonDatas) {
         if (buttonDatas == null || buttonDatas.isEmpty()) {
             return this;
@@ -389,11 +389,11 @@ public class SectorMenuButton extends View implements ValueAnimator.AnimatorUpda
         return super.onTouchEvent(event);
     }
 
-    
-
-
-
-
+    /**
+     *  更新按钮位置
+     * @param buttonIndex
+     * @param rectF
+     */
     private void updatePressPosition(int buttonIndex, RectF rectF) {
         if (buttonIndex < 0) {
             return;
@@ -415,7 +415,7 @@ public class SectorMenuButton extends View implements ValueAnimator.AnimatorUpda
         return pointF.x >= rectF.left && pointF.x <= rectF.right && pointF.y >= rectF.top && pointF.y <= rectF.bottom;
     }
 
-    
+    //更新按钮的状态
     private void updatePressState(int buttonIndex, boolean down) {
         if (buttonIndex < 0) {
             return;
@@ -448,7 +448,7 @@ public class SectorMenuButton extends View implements ValueAnimator.AnimatorUpda
         }
     }
 
-    
+    //打开菜单
     public void expand() {
         if (expandValueAnimator.isRunning()) {
             expandValueAnimator.cancel();
@@ -460,7 +460,7 @@ public class SectorMenuButton extends View implements ValueAnimator.AnimatorUpda
         }
     }
 
-    
+    //关闭菜单
     public void collapse() {
         if (collapseValueAnimator.isRunning()) {
             collapseValueAnimator.cancel();
@@ -472,7 +472,7 @@ public class SectorMenuButton extends View implements ValueAnimator.AnimatorUpda
         }
     }
 
-    
+    //主菜单旋转动画
     private void startRotateAnimator(boolean expand) {
         if (rotateValueAnimator != null) {
             if (rotateValueAnimator.isRunning()) {
@@ -489,7 +489,7 @@ public class SectorMenuButton extends View implements ValueAnimator.AnimatorUpda
         }
     }
 
-    
+    //更新底层view
     private void attachMask() {
         if (maskView == null) {
             maskView = new MaskView(getContext(), this);
@@ -505,10 +505,10 @@ public class SectorMenuButton extends View implements ValueAnimator.AnimatorUpda
         }
     }
 
-    
-
-
-
+    /**
+     * 模糊处理
+     * @return
+     */
     private boolean showBlur() {
         if (!blurBackground) {
             return false;
@@ -546,18 +546,18 @@ public class SectorMenuButton extends View implements ValueAnimator.AnimatorUpda
         return true;
     }
 
-    
-
-
+    /**
+     * 检查模糊处理的Radius，必须在0~25之间
+     */
     private void checkBlurRadius() {
         if (blurRadius <= 0 || blurRadius > 25) {
             blurRadius = DEFAULT_BLUR_RADIUS;
         }
     }
 
-    
-
-
+    /**
+     * 隐藏模糊处理
+     */
     private void hideBlur() {
         if (!blurBackground) {
             return;
@@ -579,9 +579,9 @@ public class SectorMenuButton extends View implements ValueAnimator.AnimatorUpda
         blurAnimator.start();
     }
 
-    
-
-
+    /**
+     * 隐藏底层view
+     */
     private void detachMask() {
         if (maskAttached) {
             ViewGroup root = (ViewGroup) getRootView();
@@ -597,9 +597,9 @@ public class SectorMenuButton extends View implements ValueAnimator.AnimatorUpda
         invalidate();
     }
 
-    
-
-
+    /**
+     * 重置按钮水波纹效果
+     */
     private void resetRippleInfo() {
         rippleInfo.buttonIndex = Integer.MIN_VALUE;
         rippleInfo.pressX = 0;
@@ -607,10 +607,10 @@ public class SectorMenuButton extends View implements ValueAnimator.AnimatorUpda
         rippleInfo.rippleRadius = 0;
     }
 
-    
-
-
-
+    /**
+     * 绘制主菜单
+     * @param canvas
+     */
     private void drawButton(Canvas canvas) {
         if (buttonDatas == null || buttonDatas.isEmpty()) {
             return;
@@ -620,22 +620,22 @@ public class SectorMenuButton extends View implements ValueAnimator.AnimatorUpda
         drawButton(canvas, paint, buttonData);
     }
 
-    
-
-
-
+    /**
+     * 绘制指定按钮
+     * @param canvas
+     */
     private void drawButton(Canvas canvas, Paint paint, ButtonData buttonData) {
         drawShadow(canvas, paint, buttonData);
         drawContent(canvas, paint, buttonData);
         drawRipple(canvas, paint, buttonData);
     }
 
-    
-
-
-
-
-
+    /**
+     * 绘制阴影效果
+     * @param canvas
+     * @param paint
+     * @param buttonData
+     */
     private void drawShadow(Canvas canvas, Paint paint, ButtonData buttonData) {
         if (buttonElevationPx <= 0) {
             return;
@@ -667,12 +667,12 @@ public class SectorMenuButton extends View implements ValueAnimator.AnimatorUpda
         canvas.drawBitmap(bitmap, shadowMatrix, paint);
     }
 
-    
-
-
-
-
-
+    /**
+     * 绘制菜单按钮的内容（icon 文字）
+     * @param canvas
+     * @param paint
+     * @param buttonData
+     */
     private void drawContent(Canvas canvas, Paint paint, ButtonData buttonData) {
         paint.setAlpha(255);
         paint.setColor(buttonData.getBackgroundColor());
@@ -701,13 +701,13 @@ public class SectorMenuButton extends View implements ValueAnimator.AnimatorUpda
         }
     }
 
-    
-
-
-
-
-
-
+    /**
+     * 绘制文字
+     * @param strings
+     * @param canvas
+     * @param x
+     * @param y
+     */
     private void drawTexts(String[] strings, Canvas canvas, float x, float y) {
         Paint.FontMetrics fontMetrics = textPaint.getFontMetrics();
         float top = fontMetrics.top;
@@ -721,12 +721,12 @@ public class SectorMenuButton extends View implements ValueAnimator.AnimatorUpda
         }
     }
 
-    
-
-
-
-
-
+    /**
+     * 绘制水波纹效果
+     * @param canvas
+     * @param paint
+     * @param buttonData
+     */
     private void drawRipple(Canvas canvas, Paint paint, ButtonData buttonData) {
         int pressIndex = buttonDatas.indexOf(buttonData);
         if (!rippleEffect || pressIndex == -1 || pressIndex != rippleInfo.buttonIndex) {
@@ -748,11 +748,11 @@ public class SectorMenuButton extends View implements ValueAnimator.AnimatorUpda
         canvas.restore();
     }
 
-    
-
-
-
-
+    /**
+     * 获取按钮阴影效果Bitmap
+     * @param buttonData
+     * @return
+     */
     private Bitmap getButtonShadowBitmap(ButtonData buttonData) {
         if (buttonData.isMainButton()) {
             if (mainShadowBitmap != null) {

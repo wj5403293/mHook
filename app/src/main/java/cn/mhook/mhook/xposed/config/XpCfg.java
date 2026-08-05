@@ -20,9 +20,9 @@ public class XpCfg {
     public static JSONArray getAllCfg() {
         JSONArray ret = new JSONArray();
         try {
-            if (!RxFileTool.fileExists(mXpCfgDir)) { 
+            if (!RxFileTool.fileExists(mXpCfgDir)) { //无全局模块
                return ret;
-            } else {
+            } else {//有全局模块
                 String mjson = RxFileTool.readFile2String(mXpCfgDir, "utf-8");
                 JSONObject mXpCfg = JSONObject.parseObject(mjson);
                 if (mXpCfg==null) return ret;

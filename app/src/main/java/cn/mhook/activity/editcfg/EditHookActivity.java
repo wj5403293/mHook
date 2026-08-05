@@ -3,6 +3,7 @@ package cn.mhook.activity.editcfg;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
@@ -30,6 +31,10 @@ import com.tamsiree.rxkit.RxTimeTool;
 import com.tamsiree.rxkit.view.RxToast;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import cn.mhook.BaseActivity;
 import cn.mhook.activity.SelectApp;
@@ -89,20 +94,20 @@ public class EditHookActivity extends BaseActivity {
                     }
                 })
                 .subNormalText("修改程序的指定类指定方法的返回值"));
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
+        /*
+        bmb.addBuilder(new HamButton.Builder()
+                .normalImageRes(R.drawable.eagle)
+                .normalText("修改参数")
+                .listener(new OnBMClickListener() {
+                    @Override
+                    public void onBoomButtonClick(int index) {
+                        edit=null;
+                        Intent intent = new Intent();
+                        intent.setClass(EditHookActivity.this, EditSetParms.class);
+                        startActivityForResult(intent, 1);
+                    }
+                })
+                .subNormalText("修改方法的参数"));*/
         String pkg = config.getString("appPkg");
         String nText;
         if (pkg==null){
@@ -132,13 +137,7 @@ public class EditHookActivity extends BaseActivity {
         if (requestCode == 1 && resultCode == 2){
             Bundle b = data.getExtras();
             JSONObject hookCfg = JSONObject.parseObject(b.getString("data"));
-            if (edit==null){
-                addItem(hookCfg,getLongDetailItem());
-            }else {
-                hookList.remove(edit);
-                addItem(hookCfg,edit);
-                edit = null;
-            }
+            onHookResult(hookCfg);
         }
         if(requestCode==9008&&resultCode==RESULT_OK){
             String comment = data.getStringExtra("pkg");
@@ -149,6 +148,111 @@ public class EditHookActivity extends BaseActivity {
                 config.put("appVer", RxAppTool.getAppVersionName(EditHookActivity.this, comment));
             }
 
+        }
+    }
+
+    private void onHookResult(final JSONObject hookCfg){
+        final QMUICommonListItemView replaceItem = edit;
+        final List<QMUICommonListItemView> dups = findDuplicates(hookCfg, replaceItem);
+        if (dups.isEmpty()){
+            doAddHook(hookCfg, replaceItem);
+            return;
+        }
+        String cls = hookCfg.getString("className");
+        String mtd = hookCfg.getString("methodName");
+        if (dups.size() == 1){
+            new QMUIDialog.MessageDialogBuilder(EditHookActivity.this)
+                    .setTitle("重复配置")
+                    .setMessage("已存在相同Hook配置\n类："+cls+"\n方法："+mtd+"\n是否覆盖？")
+                    .setSkinManager(QMUISkinManager.defaultInstance(EditHookActivity.this))
+                    .addAction("跳过", new QMUIDialogAction.ActionListener() {
+                        @Override
+                        public void onClick(QMUIDialog dialog, int index) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .addAction(0, "覆盖", QMUIDialogAction.ACTION_PROP_NEGATIVE, new QMUIDialogAction.ActionListener() {
+                        @Override
+                        public void onClick(QMUIDialog dialog, int index) {
+                            removeHookItems(dups);
+                            doAddHook(hookCfg, replaceItem);
+                            dialog.dismiss();
+                        }
+                    })
+                    .create().show();
+        }else {
+            QMUIDialog.MenuDialogBuilder menuBuilder = new QMUIDialog.MenuDialogBuilder(EditHookActivity.this)
+                    .setTitle("存在 "+dups.size()+" 个相同配置，请选择")
+                    .setSkinManager(QMUISkinManager.defaultInstance(EditHookActivity.this));
+            menuBuilder.addItem("跳过当前", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            menuBuilder.addItem("覆盖当前", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    removeHookItems(Collections.singletonList(dups.get(0)));
+                    doAddHook(hookCfg, replaceItem);
+                    dialog.dismiss();
+                }
+            });
+            menuBuilder.addItem("跳过全部", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            menuBuilder.addItem("覆盖全部", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    removeHookItems(dups);
+                    doAddHook(hookCfg, replaceItem);
+                    dialog.dismiss();
+                }
+            });
+            menuBuilder.create().show();
+        }
+    }
+
+    private List<QMUICommonListItemView> findDuplicates(JSONObject hookCfg, QMUICommonListItemView exclude){
+        List<QMUICommonListItemView> dups = new ArrayList<>();
+        String cls = hookCfg.getString("className");
+        String mtd = hookCfg.getString("methodName");
+        if (cls == null || mtd == null){
+            return dups;
+        }
+        for (Object o : hookList){
+            QMUICommonListItemView item = (QMUICommonListItemView) o;
+            if (item == exclude){
+                continue;
+            }
+            Object tag = item.getTag();
+            if (tag instanceof JSONObject){
+                JSONObject j = (JSONObject) tag;
+                if (cls.equals(j.getString("className")) && mtd.equals(j.getString("methodName"))){
+                    dups.add(item);
+                }
+            }
+        }
+        return dups;
+    }
+
+    private void removeHookItems(List<QMUICommonListItemView> items){
+        for (QMUICommonListItemView item : items){
+            hookList.remove(item);
+            mGroupListView.removeView(item);
+        }
+    }
+
+    private void doAddHook(JSONObject hookCfg, QMUICommonListItemView replaceItem){
+        if (replaceItem == null){
+            addItem(hookCfg, getLongDetailItem());
+        }else {
+            hookList.remove(replaceItem);
+            addItem(hookCfg, replaceItem);
+            edit = null;
         }
     }
 
@@ -223,18 +327,116 @@ public class EditHookActivity extends BaseActivity {
                         })
                         .create().show();
             }else {
-                config.put("keyStr",RxEncryptTool.encryptMD5ToString(config.toJSONString()));
-                Boolean success = jsonCfg.addCfg(config.getString("appPkg"),true,false,config.getString("keyStr"),config,false);
-                if (success){
-                    RxToast.success("添加成功");
+                final String pkg = config.getString("appPkg");
+                final String newKey = RxEncryptTool.encryptMD5ToString(config.toJSONString());
+                if (jsonCfg.getCfgByKey(newKey) != null){
+                    new QMUIDialog.MessageDialogBuilder(EditHookActivity.this)
+                            .setTitle("重复配置")
+                            .setMessage("已存在相同配置，是否覆盖？")
+                            .setSkinManager(QMUISkinManager.defaultInstance(EditHookActivity.this))
+                            .addAction("跳过", new QMUIDialogAction.ActionListener() {
+                                @Override
+                                public void onClick(QMUIDialog dialog, int index) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .addAction(0, "覆盖", QMUIDialogAction.ACTION_PROP_NEGATIVE, new QMUIDialogAction.ActionListener() {
+                                @Override
+                                public void onClick(QMUIDialog dialog, int index) {
+                                    jsonCfg.delConfig(pkg,newKey);
+                                    doAddNewConfig(pkg,newKey);
+                                    dialog.dismiss();
+                                }
+                            })
+                            .create().show();
                 }else {
-                    RxToast.warning("已存在相同配置");
+                    final List<JSONObject> samePkg = getCfgByPkg(pkg);
+                    if (samePkg.isEmpty()){
+                        doAddNewConfig(pkg,newKey);
+                    }else if (samePkg.size() == 1){
+                        new QMUIDialog.MessageDialogBuilder(EditHookActivity.this)
+                                .setTitle("重复配置")
+                                .setMessage("该软件已存在 1 个配置，是否覆盖？")
+                                .setSkinManager(QMUISkinManager.defaultInstance(EditHookActivity.this))
+                                .addAction("跳过", new QMUIDialogAction.ActionListener() {
+                                    @Override
+                                    public void onClick(QMUIDialog dialog, int index) {
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .addAction(0, "覆盖", QMUIDialogAction.ACTION_PROP_NEGATIVE, new QMUIDialogAction.ActionListener() {
+                                    @Override
+                                    public void onClick(QMUIDialog dialog, int index) {
+                                        jsonCfg.delConfig(pkg,samePkg.get(0).getString("KeyStr"));
+                                        doAddNewConfig(pkg,newKey);
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .create().show();
+                    }else {
+                        QMUIDialog.MenuDialogBuilder menuBuilder = new QMUIDialog.MenuDialogBuilder(EditHookActivity.this)
+                                .setTitle("该软件已存在 "+samePkg.size()+" 个配置，请选择")
+                                .setSkinManager(QMUISkinManager.defaultInstance(EditHookActivity.this));
+                        menuBuilder.addItem("跳过当前", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                        menuBuilder.addItem("覆盖当前", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                jsonCfg.delConfig(pkg,samePkg.get(0).getString("KeyStr"));
+                                doAddNewConfig(pkg,newKey);
+                                dialog.dismiss();
+                            }
+                        });
+                        menuBuilder.addItem("跳过全部", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                        menuBuilder.addItem("覆盖全部", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                for (JSONObject j : samePkg){
+                                    jsonCfg.delConfig(pkg,j.getString("KeyStr"));
+                                }
+                                doAddNewConfig(pkg,newKey);
+                                dialog.dismiss();
+                            }
+                        });
+                        menuBuilder.create().show();
+                    }
                 }
-                finish();
             }
         }else {
             RxToast.warning("似乎忘了点什么");
         }
+    }
+
+    private void doAddNewConfig(String pkg,String newKey){
+        config.put("keyStr",newKey);
+        Boolean success = jsonCfg.addCfg(pkg,true,false,newKey,config,false);
+        if (success){
+            RxToast.success("添加成功");
+        }else {
+            RxToast.warning("已存在相同配置");
+        }
+        finish();
+    }
+
+    private List<JSONObject> getCfgByPkg(String pkg){
+        List<JSONObject> list = new ArrayList<>();
+        JSONArray all = jsonCfg.getAllCfg();
+        for (Object o : all){
+            JSONObject j = JSONObject.parseObject(o.toString());
+            if (pkg.equals(j.getString("pkg"))){
+                list.add(j);
+            }
+        }
+        return list;
     }
 
     private void SelectApp() {

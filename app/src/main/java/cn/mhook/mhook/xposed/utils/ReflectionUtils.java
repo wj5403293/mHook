@@ -4,12 +4,12 @@ import android.util.Log;
 
 import java.lang.reflect.Method;
 
+//
+// Created by Swift Gan on 2019/3/15.
+//
 
 
-
-
-
-
+//bypass hidden api on Android 9 - 10
 public class ReflectionUtils {
 
     public static Method forNameMethod;
@@ -47,7 +47,7 @@ public class ReflectionUtils {
         }
     }
 
-    
+    //methidSigs like Lcom/swift/sandhook/utils/ReflectionUtils;->vmRuntime:java/lang/Object; (from hidden policy list)
     public static void addReflectionWhiteList(String... memberSigs) throws Throwable {
         addWhiteListMethod.invoke(vmRuntime, new Object[] {memberSigs});
     }

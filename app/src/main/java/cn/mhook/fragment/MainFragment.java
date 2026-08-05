@@ -27,9 +27,9 @@ public class MainFragment extends QMUIFragment {
     private View root;
     private List<MainItem> datas = new ArrayList<>();
     private MainAdapter adapter;
-    
-
-
+    /**
+     * onCreateView
+     */
     @Override
     protected View onCreateView() {
         root = LayoutInflater.from(getContext()).inflate(R.layout.fragment_main, null);

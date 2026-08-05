@@ -28,10 +28,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+                <CheckBox
+                    android:id="@+id/selectBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:visibility="gone"/>
+
                 <TextView
                     android:id="@+id/appName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/selectBox"
                     android:text="SuperHook"
                     android:textSize="16dp"
                     android:textStyle="bold"
@@ -80,6 +91,7 @@
                     android:layout_height="wrap_content"
                     android:text="cn.superhook.app"
                     android:layout_below="@id/appName"
+                    android:layout_toRightOf="@id/selectBox"
                     android:layout_marginTop="3dp"
                     android:textSize="14dp"
                     android:textColor="@color/qmui_config_color_75_pure_black"/>
@@ -90,6 +102,7 @@
                     android:layout_height="wrap_content"
                     android:text="去除更新提示,解锁会员功能"
                     android:layout_below="@+id/pkg"
+                    android:layout_toRightOf="@id/selectBox"
                     android:layout_marginTop="3dp"
                     android:textSize="14dp"
                     android:textColor="@color/qmui_config_color_75_pure_black"/>
@@ -163,8 +176,8 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     app:bmb_buttonEnum="ham"
-                    app:bmb_piecePlaceEnum="piecePlace_ham_5"
-                    app:bmb_buttonPlaceEnum="buttonPlace_ham_5"
+                    app:bmb_piecePlaceEnum="piecePlace_ham_4"
+                    app:bmb_buttonPlaceEnum="buttonPlace_ham_4"
                     app:bmb_inList="true"
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"/>

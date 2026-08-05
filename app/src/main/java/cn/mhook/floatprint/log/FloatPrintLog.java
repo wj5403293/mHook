@@ -46,9 +46,9 @@ public class FloatPrintLog extends QMUIFragment {
     private int endId = 0;
     private Boolean stop = false;
 
-    
-
-
+    /**
+     * onCreateView
+     */
     @Override
     protected View onCreateView() {
         root = LayoutInflater.from(getContext()).inflate(R.layout.float_print_log, null);
@@ -116,8 +116,8 @@ public class FloatPrintLog extends QMUIFragment {
 
     private Runnable task =new Runnable() {
         public void run() {
-            
-            handler.postDelayed(this,200);
+            // TODOAuto-generated method stub
+            handler.postDelayed(this,200);//设置延迟时间，此处是5秒
             JSONObject jsonObject = PrintData.getData(RxTool.getContext(),endId);
             int eid = jsonObject.getIntValue("endId");
             if (eid<=0){

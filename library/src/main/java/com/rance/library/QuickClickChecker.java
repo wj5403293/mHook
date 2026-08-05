@@ -1,9 +1,9 @@
 package com.rance.library;
 
-
-
-
-
+/**
+ * 作者：Rance on 2016/11/10 16:41
+ * 邮箱：rance935@163.com
+ */
 public class QuickClickChecker {
     private int threshold;
     private long lastClickTime = 0;

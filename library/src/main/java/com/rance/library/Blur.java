@@ -7,12 +7,12 @@ import android.os.Looper;
 
 import androidx.annotation.WorkerThread;
 
-
-
-
-
-
-
+/**
+ * 作者：Rance on 2016/11/10 16:41
+ * 邮箱：rance935@163.com
+ *
+ * 纯 Java 实现的高斯近似模糊（三遍 box blur），替代已废弃的 RenderScript。
+ */
 public class Blur {
     private static final float SCALE = 0.4F;
     private static final int PASSES = 3;

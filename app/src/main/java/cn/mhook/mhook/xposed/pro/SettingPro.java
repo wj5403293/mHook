@@ -33,7 +33,7 @@ public class SettingPro {
             }
         };
 
-        
+        // FIXME: 18-6-23 w568w: It's very dangerous to hook these methods, thinking to replace them.
         XposedHelpers.findAndHookMethod(
                 ClassLoader.class,
                 "loadClass",
@@ -102,7 +102,7 @@ public class SettingPro {
                     protected void afterHookedMethod(MethodHookParam param) {
                         List<PackageInfo> apps = (List<PackageInfo>) param.getResult();
                         List<PackageInfo> clone = new ArrayList<>();
-                        
+                        // foreach is very slow.
                         final int len = apps.size();
                         for (int i = 0; i < len; i++) {
                             PackageInfo app = apps.get(i);

@@ -17,9 +17,9 @@ import java.util.Map;
 
 import cn.mhook.mhook.xposed.utils.H;
 
-
-
-
+/**
+ * Created by zhangshaowen on 16/3/18.
+ */
 public class SystemClassLoaderAdder {
     private static final String TAG = "Tinker.ClassLoaderAdder";
     private static int sPatchDexCount = 0;
@@ -74,7 +74,7 @@ public class SystemClassLoaderAdder {
                 }
 
                 final String testDexSuffix = ShareConstants.TEST_DEX_NAME;
-                
+                // test.dex should always be at tail.
                 if (lhsName.startsWith(testDexSuffix)) {
                     return 1;
                 }
@@ -91,7 +91,7 @@ public class SystemClassLoaderAdder {
                     final int rhsId = (rhsDotPos > 7 ? Integer.parseInt(rhsName.substring(7, rhsDotPos)) : 1);
                     return (lhsId == rhsId ? 0 : (lhsId < rhsId ? -1 : 1));
                 } else if (isLhsNameMatchClassN) {
-                    
+                    // Dex name that matches class N rules should always be at first.
                     return -1;
                 } else if (isRhsNameMatchClassN) {
                     return 1;
@@ -103,9 +103,9 @@ public class SystemClassLoaderAdder {
         return result;
     }
 
-    
-
-
+    /**
+     * Installer for platform huawei ark
+     */
     private static final class ArkHot {
         private static void install(ClassLoader loader, List<File> additionalClassPathEntries)
                 throws IllegalArgumentException, IllegalAccessException, NoSuchMethodException,
@@ -124,20 +124,20 @@ public class SystemClassLoaderAdder {
         }
     }
 
-    
-
-
+    /**
+     * Installer for platform versions 23.
+     */
     private static final class V23 {
 
         private static void install(ClassLoader loader, List<File> additionalClassPathEntries,
                                     File optimizedDirectory)
                 throws IllegalArgumentException, IllegalAccessException,
                 NoSuchFieldException, InvocationTargetException, NoSuchMethodException, IOException {
-            
-
-
-
-
+            /* The patched class loader is expected to be a descendant of
+             * dalvik.system.BaseDexClassLoader. We modify its
+             * dalvik.system.DexPathList pathList field to append additional DEX
+             * file entries.
+             */
             Field pathListField = ShareReflectUtil.findField(loader, "pathList");
             Object dexPathList = pathListField.get(loader);
             ArrayList<IOException> suppressedExceptions = new ArrayList<IOException>();
@@ -153,10 +153,10 @@ public class SystemClassLoaderAdder {
             }
         }
 
-        
-
-
-
+        /**
+         * A wrapper around
+         * {@code private static final dalvik.system.DexPathList#makePathElements}.
+         */
         private static Object[] makePathElements(
                 Object dexPathList, ArrayList<File> files, File optimizedDirectory,
                 ArrayList<IOException> suppressedExceptions)
@@ -186,20 +186,20 @@ public class SystemClassLoaderAdder {
         }
     }
 
-    
-
-
+    /**
+     * Installer for platform versions 19.
+     */
     private static final class V19 {
 
         private static void install(ClassLoader loader, List<File> additionalClassPathEntries,
                                     File optimizedDirectory)
                 throws IllegalArgumentException, IllegalAccessException,
                 NoSuchFieldException, InvocationTargetException, NoSuchMethodException, IOException {
-            
-
-
-
-
+            /* The patched class loader is expected to be a descendant of
+             * dalvik.system.BaseDexClassLoader. We modify its
+             * dalvik.system.DexPathList pathList field to append additional DEX
+             * file entries.
+             */
             Field pathListField = ShareReflectUtil.findField(loader, "pathList");
             Object dexPathList = pathListField.get(loader);
             ArrayList<IOException> suppressedExceptions = new ArrayList<IOException>();
@@ -214,10 +214,10 @@ public class SystemClassLoaderAdder {
             }
         }
 
-        
-
-
-
+        /**
+         * A wrapper around
+         * {@code private static final dalvik.system.DexPathList#makeDexElements}.
+         */
         private static Object[] makeDexElements(
                 Object dexPathList, ArrayList<File> files, File optimizedDirectory,
                 ArrayList<IOException> suppressedExceptions)
@@ -241,30 +241,30 @@ public class SystemClassLoaderAdder {
         }
     }
 
-    
-
-
+    /**
+     * Installer for platform versions 14, 15, 16, 17 and 18.
+     */
     private static final class V14 {
 
         private static void install(ClassLoader loader, List<File> additionalClassPathEntries,
                                     File optimizedDirectory)
                 throws IllegalArgumentException, IllegalAccessException,
                 NoSuchFieldException, InvocationTargetException, NoSuchMethodException {
-            
-
-
-
-
+            /* The patched class loader is expected to be a descendant of
+             * dalvik.system.BaseDexClassLoader. We modify its
+             * dalvik.system.DexPathList pathList field to append additional DEX
+             * file entries.
+             */
             Field pathListField = ShareReflectUtil.findField(loader, "pathList");
             Object dexPathList = pathListField.get(loader);
             ShareReflectUtil.expandFieldArray(dexPathList, "dexElements", makeDexElements(dexPathList,
                     new ArrayList<File>(additionalClassPathEntries), optimizedDirectory));
         }
 
-        
-
-
-
+        /**
+         * A wrapper around
+         * {@code private static final dalvik.system.DexPathList#makeDexElements}.
+         */
         private static Object[] makeDexElements(
                 Object dexPathList, ArrayList<File> files, File optimizedDirectory)
                 throws IllegalAccessException, InvocationTargetException,

@@ -106,8 +106,8 @@ public class XPXWActivity extends BaseActivity {
                 }
             }
             FirstNode entity = new FirstNode(secondNodeList, info.getName(),info.getPackageName(),info.getIcon());
-            
-           
+            // 模拟 默认第0个是展开的
+           // entity.setExpanded(i == 0);
             ret.add(entity);
        }
         return ret;
@@ -138,151 +138,152 @@ public class XPXWActivity extends BaseActivity {
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/*
+public class XPXWActivity extends BaseActivity {
+
+    private RecyclerView recyclerView;
+    private SwipeRefreshLayout refreshLayout;
+    private Handler handler;
+    private List<SelectAppItem> datas = new ArrayList<>();
+    private SetectAppAdapter adapter;
+    private FloatingSearchView floatingSearchView;
+    private String path = mDir+"mHookApp/module.json";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_app_xw);
+        handler = new Handler();
+        initListView();
+        initBoomMenu();
+    }
+
+    private void initListView(){
+        recyclerView = (RecyclerView) findViewById(R.id.config_recycler_view);
+        refreshLayout=(SwipeRefreshLayout)findViewById(R.id.refresh_layout);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(RecyclerView.VERTICAL);
+        recyclerView.setLayoutManager(layoutManager);
+        refreshLayout.setRefreshing(true);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                initList("");
+            }
+        });
+        initList("");
+        adapter = new SetectAppAdapter(R.layout.activity_xw_item, datas);
+        adapter.setEmptyView(LayoutInflater.from(this).inflate(R.layout.view_empty, null));
+        adapter.addChildClickViewIds(R.id.appInfoItem);
+        adapter.addChildLongClickViewIds(R.id.appInfoItem);
+        adapter.setOnItemChildClickListener(new OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
+                new FloatActivity(XPXWActivity.this,XPXWActivity.this);
+            }
+        });
+        adapter.setOnItemChildLongClickListener(new OnItemChildLongClickListener() {
+            @Override
+            public boolean onItemChildLongClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
+                new QMUIDialog.MessageDialogBuilder(XPXWActivity.this)
+                        .setTitle("提示")
+                        .setMessage("确定要移除该应用吗？")
+                        .setSkinManager(QMUISkinManager.defaultInstance(XPXWActivity.this))
+                        .addAction("取消", new QMUIDialogAction.ActionListener() {
+                            @Override
+                            public void onClick(QMUIDialog dialog, int index) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .addAction(0, "确定", QMUIDialogAction.ACTION_PROP_NEGATIVE, new QMUIDialogAction.ActionListener() {
+                            @Override
+                            public void onClick(QMUIDialog dialog, int index) {
+                                JSONObject j = getXpCfg();
+                                j.remove(datas.get(position).getPkg());
+                                RxFileTool.writeFileFromString(path,j.toJSONString(),false);
+                                initList("");
+                                dialog.dismiss();
+                            }
+                        })
+                        .create().show();
+                return true;
+            }
+        });
+        recyclerView.setAdapter(adapter);
+        floatingSearchView = findViewById(R.id.floating_search_view);
+        floatingSearchView.setOnQueryChangeListener(new FloatingSearchView.OnQueryChangeListener() {
+            @Override
+            public void onSearchTextChanged(String oldQuery, String newQuery) {
+                initList(newQuery);
+            }
+        });
+    }
+
+
+    private void initBoomMenu(){
+        BoomMenuButton bmb = findViewById(R.id.bmb);
+        bmb.addBuilder(new HamButton.Builder()
+                .normalImageRes(R.drawable.eagle)
+                .normalText("添加分析模块")
+                .listener(new OnBMClickListener() {
+                    @Override
+                    public void onBoomButtonClick(int index) {
+                        Bundle bundle=new Bundle();
+                        bundle.putString("appType","xp");
+                        RxActivityTool.skipActivityForResult(XPXWActivity.this, SelectActivity.class,bundle,9008);
+                    }
+                })
+                .subNormalText("添加需要分析的Xp模块"));
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==9008&&resultCode==RESULT_OK){
+            String pkg = data.getStringExtra("pkg");
+            JSONObject j = getXpCfg();
+            if (j.containsKey(pkg)){
+                RxToast.warning("该模块已添加");
+            }else {
+                j.put(pkg,new JSONObject());
+                RxFileTool.writeFileFromString(path,j.toJSONString(),false);
+                initList("");
+            }
+        }
+    }
+
+
+    private  void initList(final String query){
+        new Thread(new Runnable(){
+            @Override
+            public void run(){
+                if (datas.size()>0){
+                    datas.clear();
+                }
+                JSONObject jsonObject = getXpCfg();
+                    for (String pkg:jsonObject.keySet()){
+                        if (pkg.contains(query)||RxAppTool.getAppName(XPXWActivity.this,pkg).contains(query)){
+                            datas.add(new SelectAppItem(pkg,RxAppTool.getAppVersionName(XPXWActivity.this,pkg), RxAppTool.getAppName(XPXWActivity.this,pkg)));
+                        }
+                    }
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.notifyDataSetChanged();
+                        refreshLayout.setRefreshing(false);
+                    }
+                }, 0);
+            }
+        }).start();
+    }
+
+    private JSONObject getXpCfg(){
+        if (!RxFileTool.fileExists(path)){
+            return new JSONObject();
+        }
+        String jsonCfg = RxFileTool.readFile2String(path,"utf-8");
+        return JSONObject.parseObject(jsonCfg);
+    }
+
+}
+*/

@@ -20,9 +20,9 @@ public class SuperContentProvider extends ContentProvider {
     private static final String TABLE_NAME = "printLog";
     private static final String TABLE_NAME2 = "jsonCfg";
     private static final String TABLE_NAME3 = "appCfg";
-    
+    // 构建URI
     static {
-        
+        // content://programandroid/person
         matcher.addURI(MAUTHORITIESNAME, "print", print);
         matcher.addURI(MAUTHORITIESNAME, "jsonCfg", jsonCfg);
         matcher.addURI(MAUTHORITIESNAME, "appCfg", appCfg);
@@ -31,7 +31,7 @@ public class SuperContentProvider extends ContentProvider {
     @Override
     public boolean onCreate() {
         DBHelper helper = new DBHelper(getContext());
-        
+        // 创建数据库
         db = helper.getWritableDatabase();
         return true;
     }
@@ -41,7 +41,7 @@ public class SuperContentProvider extends ContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
 
-        
+        // 过滤URI
         int match = matcher.match(uri);
         switch (match) {
             case print:
@@ -63,24 +63,24 @@ public class SuperContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        
+        // 过滤URI
         int match = matcher.match(uri);
         switch (match) {
             case print:
-                
+                // content://autoname/person
                 getContext().getContentResolver().notifyChange(uri, null);
                 long id = db.insert(TABLE_NAME, null, values);
-                
+                // 将原有的uri跟id进行拼接从而获取新的uri
                 return ContentUris.withAppendedId(uri, id);
             case jsonCfg:
                 getContext().getContentResolver().notifyChange(uri, null);
                 long id2 = db.insert(TABLE_NAME2, null, values);
-                
+                // 将原有的uri跟id进行拼接从而获取新的uri
                 return ContentUris.withAppendedId(uri, id2);
             case appCfg:
                 getContext().getContentResolver().notifyChange(uri, null);
                 long id3 = db.insert(TABLE_NAME3, null, values);
-                
+                // 将原有的uri跟id进行拼接从而获取新的uri
                 return ContentUris.withAppendedId(uri, id3);
             default:
                 break;
@@ -90,25 +90,25 @@ public class SuperContentProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        
+        // 过滤URI
         int match = matcher.match(uri);
         switch (match) {
             case print:
-                
+                // content://autoname/person
 
                 int id = db.delete(TABLE_NAME,selection,selectionArgs);
 
-                
+                // 将原有的uri跟id进行拼接从而获取新的uri
                 return id;
             case jsonCfg:
                 int id2 = db.delete(TABLE_NAME2,selection,selectionArgs);
 
-                
+                // 将原有的uri跟id进行拼接从而获取新的uri
                 return id2;
             case appCfg:
                 int id3 = db.delete(TABLE_NAME3,selection,selectionArgs);
 
-                
+                // 将原有的uri跟id进行拼接从而获取新的uri
                 return id3;
             default:
                 break;
@@ -119,23 +119,23 @@ public class SuperContentProvider extends ContentProvider {
     @Override
     public int update(Uri uri, ContentValues values, String selection,
                       String[] selectionArgs) {
-        
+        // 过滤URI
         int match = matcher.match(uri);
         switch (match) {
             case print:
-                
+                // content://autoname/person
                 int id = db.update(TABLE_NAME,values,selection,selectionArgs);
-                
+                // 将原有的uri跟id进行拼接从而获取新的uri
                 return id;
             case jsonCfg:
-                
+                // content://autoname/person
                 int id2 = db.update(TABLE_NAME2,values,selection,selectionArgs);
-                
+                // 将原有的uri跟id进行拼接从而获取新的uri
                 return id2;
             case appCfg:
-                
+                // content://autoname/person
                 int id3 = db.update(TABLE_NAME3,values,selection,selectionArgs);
-                
+                // 将原有的uri跟id进行拼接从而获取新的uri
                 return id3;
             default:
                 break;

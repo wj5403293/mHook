@@ -17,9 +17,9 @@ import cn.mhook.mhook.xposed.fix.ShareReflectUtil;
 import cn.mhook.mhook.xposed.fix.SystemClassLoaderAdder;
 import cn.mhook.mhook.xposed.utils.H;
 
-
-
-
+/**
+ * Created by liangwenxiang on 2016/4/14.
+ */
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
@@ -35,18 +35,18 @@ import com.tamsiree.rxkit.RxFileTool;
 import java.io.File;
 import java.lang.reflect.Field;
 
-
-
-
+/**
+ * Created by liangwenxiang on 2016/4/14.
+ */
 public class TinkerResourceLoader {
     private static final String TAG = "Tinker.ResourceLoader";
 
     private TinkerResourceLoader() {
     }
 
-    
-
-
+    /**
+     * Load tinker resources
+     */
     public static boolean loadTinkerResources(Application application, String resourceString) {
 
         if (!RxFileTool.isFileExists(resourceString))return false;
@@ -58,21 +58,21 @@ public class TinkerResourceLoader {
             Log.e(TAG, "install resources failed");
             return false;
         }
-        
+        // tinker resources loaded, monitor runtime accident
         ResourceStateMonitor.tryStart(application);
         return true;
     }
 
 
 
-    
-
-
-
-
-
-
-
+    /**
+     * Some situations may cause our resource modification to be ineffective,
+     * for example, an APPLICATION_INFO_CHANGED message will reset LoadedApk#mResDir
+     * to default value, then a relaunch activity which using tinker resources may
+     * throw an Resources$NotFoundException.
+     *
+     * Monitor and handle them.
+     */
     private static class ResourceStateMonitor {
 
         private static boolean started = false;
@@ -114,7 +114,7 @@ public class TinkerResourceLoader {
                 try {
                     appInfoChanged = ShareReflectUtil.findField($H, "APPLICATION_INFO_CHANGED").getInt(null);
                 } catch (Throwable e) {
-                    appInfoChanged = 156; 
+                    appInfoChanged = 156; // default value
                 }
                 APPLICATION_INFO_CHANGED = appInfoChanged;
             }
@@ -132,10 +132,10 @@ public class TinkerResourceLoader {
 
             private boolean hackMessage(Message msg) {
                 if (msg.what == APPLICATION_INFO_CHANGED) {
-                    
-                    
-                    
-                    
+                    // We are generally in the background this moment(signal trigger is
+                    // in front of user), and the signal was going to relaunch all our
+                    // activities to apply new overlay resources. So we could simply kill
+                    // ourselves, or ignore this signal, or reload tinker resources.
                     Process.killProcess(Process.myPid());
                     return true;
                 }

@@ -42,6 +42,55 @@
         </RelativeLayout>
 
         <LinearLayout
+            android:id="@+id/selectBar"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:background="@color/blue"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/selectAll"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="全选"
+                android:textColor="@color/white"
+                android:textSize="15dp"/>
+
+            <TextView
+                android:id="@+id/shareSelected"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="分享"
+                android:textColor="@color/white"
+                android:textSize="15dp"/>
+
+            <TextView
+                android:id="@+id/deleteSelected"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="删除"
+                android:textColor="@color/white"
+                android:textSize="15dp"/>
+
+            <TextView
+                android:id="@+id/exitSelect"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="退出"
+                android:textColor="@color/white"
+                android:textSize="15dp"/>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -86,8 +135,8 @@
                     app:bmb_normalColor="@android:color/white"
                     app:bmb_highlightedColor="@android:color/darker_gray"
                     app:bmb_buttonEnum="ham"
-                    app:bmb_piecePlaceEnum="piecePlace_ham_1"
-                    app:bmb_buttonPlaceEnum="buttonPlace_ham_1"
+                    app:bmb_piecePlaceEnum="piecePlace_ham_3"
+                    app:bmb_buttonPlaceEnum="buttonPlace_ham_3"
                     app:bmb_pieceCornerRadius="2dp"
                     android:layout_margin="15dp" />
             </RelativeLayout>

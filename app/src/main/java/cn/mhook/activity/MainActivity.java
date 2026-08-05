@@ -66,8 +66,8 @@ public class MainActivity extends BaseActivity {
             this.startActivity(intent);
             finish();
         }
-       
-
+       /* getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE| WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);*/
         activity = this;
         setContentView(R.layout.activity_main);
         EventBus.getDefault().register(this);
@@ -90,7 +90,7 @@ public class MainActivity extends BaseActivity {
         handler.post(task);
         initViewPager();
         startAppInfo();
-      
+      //initTab();
     }
 
 
@@ -98,9 +98,9 @@ public class MainActivity extends BaseActivity {
     private Runnable task =new Runnable() {
         public void run() {
 
-            
-            handler.postDelayed(this,1*1000);
-            
+            // TODOAuto-generated method stub
+            handler.postDelayed(this,1*1000);//设置延迟时间，此处是5秒
+            //需要执行的代码
             time.setText(RxTimeTool.getCurTimeString(new SimpleDateFormat("HH:mm:ss")));
             qmuiProgressBar.setProgress(batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY));
         }
@@ -110,7 +110,7 @@ public class MainActivity extends BaseActivity {
         new Thread(new Runnable(){
             @Override
             public void run(){
-                
+                //处理事务
                 mData.appInfos = RxAppTool.getAllAppsInfo(MainActivity.this);
             }
         }).start();
@@ -127,16 +127,16 @@ public class MainActivity extends BaseActivity {
 
 
 
-     
+     //   mFragments.add(new MeFragment());
         viewPager.setAdapter(new  MyFragmentPagerAdapter(this,mFragments));
         viewPager.setOffscreenPageLimit(2);
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            
-
-
-
-
-
+            /**
+             * This method will be invoked when a new page becomes selected. Animation is not
+             * necessarily complete.
+             *
+             * @param position Position index of the new selected page.
+             */
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
@@ -169,9 +169,9 @@ public class MainActivity extends BaseActivity {
         qmuiTabSegment.addTab(tabBuilder
                 .setNormalDrawable(ContextCompat.getDrawable(context, R.drawable.sq))
                 .build(this));
-      
-
-
+      /*  qmuiTabSegment.addTab(tabBuilder
+                .setNormalDrawable(ContextCompat.getDrawable(context, R.drawable.me))
+                .build(this));*/
         qmuiTabSegment.setupWithViewPager(viewPager);
         qmuiTabSegment.notifyDataChanged();
         qmuiTabSegment.selectTab(0);

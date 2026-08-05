@@ -73,7 +73,7 @@ public class SelectApp extends CenterPopupView {
         adapter.setOnItemChildClickListener(new OnItemChildClickListener() {
             @Override
             public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
-                
+                // showMenu(position);
                 pkg = datas.get(position).getAppPkg();
                 dismiss();
             }
@@ -124,12 +124,12 @@ public class SelectApp extends CenterPopupView {
         super.onDismiss();
     }
 
-    
+    // 设置最大宽度，看需要而定
     @Override
     protected int getMaxWidth() {
         return (int) (XPopupUtils.getWindowHeight(getContext())*.99f);
     }
-    
+    // 最大高度为Window的0.85
     @Override
     protected int getMaxHeight() {
         return (int) (XPopupUtils.getWindowHeight(getContext())*.80f);
