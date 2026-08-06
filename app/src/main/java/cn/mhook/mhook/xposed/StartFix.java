@@ -56,7 +56,10 @@ public class StartFix {
                     String fileName = file.getFileName();
                     if (fileName.endsWith(".dex") && !fileName.contains("/")) {
                         zipFile.extractFile(fileName, dexDir);
-                        legalFiles.add(new File(dexDir + fileName));
+                        File dexFile = new File(dexDir + fileName);
+                        // Android 7.0+ 只允许从只读文件加载 dex，可写文件会被 ART 拒绝
+                        dexFile.setReadOnly();
+                        legalFiles.add(dexFile);
                     }
                 }
                 try {
