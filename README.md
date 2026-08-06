@@ -1,43 +1,31 @@
-﻿# mHook管理器
+# mHook
 
-基于 **Xposed / LSPosed 框架**的安卓应用行为分析工具。用于分析应用运行时的系统 API 调用，跟踪可疑方法，并通过可视化方式快速创建 Xposed Hook 代码，帮助检测应用可能存在的安全隐患与漏洞。
+基于 Xposed / LSPosed 的 Android 应用分析与 Hook 辅助工具。
 
-> 版本：1.4.1 (versionCode 14) ｜ 最低系统：Android 5.1 (API 22) ｜ 目标系统：Android 14 (API 34)
+## 功能特性
 
-## 主要功能
-
-- **自定义 HOOK**：无需编程经验，可视化添加和管理 Hook，快速生成 Xposed Hook 代码，跟踪应用执行的可疑方法并打印调用信息
-- **应用行为控制**：分析和控制目标应用的操作行为
-- **MK 热修复**：无感知修复应用异常，无需重新打包安装
-- **内存脱壳**：纯 Java 内存脱壳，dump 加固后的 dex，便于分析
-- **XP 模块分析**：分析 Xposed 模块的 Hook 行为（待完善）
-- **设置**：我的配置、账户设置、软件设置、调试模式
-
-## MK 热修复模式
-
-| 模式 | 说明 |
-|---|---|
-| 模式一 | dex 直接加载热修复 |
-| 模式二 | dex 预优化加载热修复 |
-| 模式三 | dex 合并热修复（普通应用推荐） |
-| 模式四 | AutoJS 脚本覆盖热修复（覆盖应用 `assets/project/` 下的 `.js` / `.snapshot` / `project.json` 脚本文件） |
-
-使用方法：在"MK热修复"中添加目标应用，选择修复模式，定制补丁包（mk.apk）后重启目标应用生效。
-
-## 环境要求
-
-- 已 Root 的安卓设备
-- 已安装 Xposed / LSPosed 框架，并启用本模块
-- 在 LSPosed 中勾选本模块作用域后重启生效
-
-## 免责声明
-
-本软件用于分析调试自身或已获授权的应用程序。在使用本软件分析、调试或创建 Hook 之前，用户必须已获取相关授权许可或著作权人同意。用户使用本软件时必须遵守国家或地区相关法律法规，违规使用导致的后果由用户自行承担。
+- 自定义 Hook 配置：运行期对指定类指定方法做返回值替换，无需修改安装包
+- 应用行为控制：分析并控制目标应用的操作行为
+- MK 热修复：模式 2（dex 合并热修复）补丁包
+- 内存脱壳：纯 Java 内存脱壳，dump 加固后的 dex
+- AI 逆向辅助：
+  - 接入大模型，自动分析目标应用并生成 Hook 配置
+  - 内置逆向技能库（SKILL.md，含 MT 管理器 MCP 技能）
+  - MCP 工具后端：MT 管理器 / 玄星逆核 / ProxyPin
+  - AI 自动改包：调用 MT 管理器 MCP 直接定位、修改并构建签名 APK
 
 ## 构建
 
+要求：Android SDK、JDK 11+。
+
 ```
-gradle :app:assembleDebug
+gradlew.bat assembleDebug
 ```
 
-依赖 JDK 17、Android SDK 35（build-tools 35.0.0）、Gradle 8.7。
+产物：`app/build/outputs/apk/debug/app-debug.apk`
+
+Release 签名请自行配置 `signingConfigs` 或使用外部签名工具。
+
+## 开源致谢
+
+本应用基于多个开源项目构建，详见应用内「设置 → 关于 → 感谢开源项目」。

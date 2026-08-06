@@ -58,6 +58,8 @@
         <activity android:name="cn.mhook.activity.xpxw.XPXWActivity" />
         <activity android:name="cn.mhook.activity.mkfix.MKFixActivity" />
         <activity android:name="cn.mhook.activity.dump.DumpActivity" />
+        <activity android:name="cn.mhook.activity.ai.AiActivity" android:launchMode="singleTop" />
+        <activity android:name="cn.mhook.activity.ai.McpSettingActivity" />
 
         <provider
             android:name=".contentprovider.SuperContentProvider"

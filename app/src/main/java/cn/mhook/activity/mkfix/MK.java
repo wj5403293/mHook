@@ -15,9 +15,9 @@ public class MK {
                 int ret = cfg.getIntValue("fix");
                 return ret;
             }
-            return 0;
+            return 2;
         }else {
-            return 0;
+            return 2;
         }
     }
 

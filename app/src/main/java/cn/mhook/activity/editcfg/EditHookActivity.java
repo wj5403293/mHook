@@ -71,9 +71,12 @@ public class EditHookActivity extends BaseActivity {
     }
 
     private void initEdit(){
-        if (getIntent().getExtras()!=null&&getIntent().getExtras().containsKey("KeyStr")){
-            JSONObject jsonObject = jsonCfg.getCfgByKey(getIntent().getExtras().getString("KeyStr"));
+        Bundle extras = getIntent().getExtras();
+        if (extras!=null&&extras.containsKey("KeyStr")){
+            JSONObject jsonObject = jsonCfg.getCfgByKey(extras.getString("KeyStr"));
             config = jsonObject;
+        }else if (extras!=null&&extras.containsKey("AiCfg")){
+            config = JSONObject.parseObject(extras.getString("AiCfg"));
         }else {
             config = new JSONObject(true);
         }

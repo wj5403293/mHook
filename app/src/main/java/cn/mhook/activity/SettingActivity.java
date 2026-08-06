@@ -13,6 +13,7 @@ import android.view.View;
 import com.alibaba.fastjson.JSONObject;
 import com.qmuiteam.qmui.skin.QMUISkinManager;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 import com.tamsiree.rxkit.view.RxToast;
@@ -62,6 +63,42 @@ public class SettingActivity extends BaseActivity {
                         Intent intent = new Intent(SettingActivity.this, IntroActivity.class);
                         SettingActivity.this.startActivity(intent);
                         finish();
+                    }
+                })
+                .addItemView(getListItem("感谢开源项目", "本应用基于以下开源项目构建"), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        new QMUIDialog.MessageDialogBuilder(SettingActivity.this)
+                                .setTitle("感谢开源项目")
+                                .setMessage("本应用基于以下开源项目构建，感谢所有开源作者的贡献：\n\n"
+                                        + "Xposed API（rovo89）\n"
+                                        + "QMUI（Tencent）\n"
+                                        + "RxTool（tamsiree）\n"
+                                        + "BoomMenu（Nightonke）\n"
+                                        + "BaseRecyclerViewAdapterHelper（CymChad）\n"
+                                        + "FloatingSearchView（arimorty）\n"
+                                        + "MaterialEditText（rengwuxian）\n"
+                                        + "fastjson（alibaba）\n"
+                                        + "EasyFloat（princekin-f）\n"
+                                        + "EventBus（greenrobot）\n"
+                                        + "XPopup（li-xiaojun）\n"
+                                        + "Bugly（Tencent）\n"
+                                        + "material-intro-screen（DreierF）\n"
+                                        + "zip4j（srikanth-lingala）\n"
+                                        + "AndroidDonate（didikee）\n"
+                                        + "RxShell（darken）\n"
+                                        + "FreeReflection（tiann）\n"
+                                        + "AndroidX 系列组件（Google）\n"
+                                        + "玄星逆核（XuanXing/NieHe）逆向技能文档（AGPL-3.0）\n\n"
+                                        + "以上项目的详细许可见各自开源仓库。")
+                                .setSkinManager(QMUISkinManager.defaultInstance(SettingActivity.this))
+                                .addAction("知道了", new QMUIDialogAction.ActionListener() {
+                                    @Override
+                                    public void onClick(QMUIDialog dialog, int index) {
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .create().show();
                     }
                 })
                 .addItemView(getListItem("打赏支持", "请若雪吃鸡腿哦"), new View.OnClickListener() {
