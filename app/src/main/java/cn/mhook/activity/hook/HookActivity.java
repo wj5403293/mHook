@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Set;
 
 import cn.mhook.BaseActivity;
-import cn.mhook.activity.ai.AiActivity;
 import cn.mhook.activity.editcfg.EditHookActivity;
 import cn.mhook.mhook.EventMessage;
 import cn.mhook.mhook.R;
@@ -266,16 +265,6 @@ public class HookActivity extends BaseActivity {
                     }
                 })
                 .subNormalText("从链接导入Hook配置"));
-        bmb.addBuilder(new HamButton.Builder()
-                .normalImageRes(R.drawable.eagle)
-                .normalText("AI 分析")
-                .listener(new OnBMClickListener() {
-                    @Override
-                    public void onBoomButtonClick(int index) {
-                        RxActivityTool.skipActivity(HookActivity.this, AiActivity.class);
-                    }
-                })
-                .subNormalText("AI生成Hook配置/热修复包"));
     }
 
     private void importFromClipboard(){

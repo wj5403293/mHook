@@ -13,6 +13,7 @@ import com.tamsiree.rxkit.RxActivityTool;
 import java.util.ArrayList;
 import java.util.List;
 import cn.mhook.activity.SettingActivity;
+import cn.mhook.activity.ai.AiActivity;
 import cn.mhook.activity.appxw.AppXWActivity;
 import cn.mhook.activity.dump.DumpActivity;
 import cn.mhook.activity.hook.HookActivity;
@@ -73,6 +74,12 @@ public class MainFragment extends QMUIFragment {
             @Override
             public void onClick(View v) {
                 RxActivityTool.skipActivity(getContext(), DumpActivity.class);
+            }
+        }));
+        datas.add(new MainItem("AI 分析", "AI生成Hook配置/自动改包", getResources().getColor(R.color.app_color_theme_1), R.drawable.comment, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RxActivityTool.skipActivity(getContext(), AiActivity.class);
             }
         }));
         datas.add(new MainItem("XP模块分析（待完善）", "分析Xposed模块的Hook行为", getResources().getColor(R.color.app_color_blue), R.drawable.xposed, new View.OnClickListener() {
