@@ -18,7 +18,7 @@ import cn.mhook.activity.appxw.AppXWActivity;
 import cn.mhook.activity.dump.DumpActivity;
 import cn.mhook.activity.hook.HookActivity;
 import cn.mhook.activity.mkfix.MKFixActivity;
-import cn.mhook.activity.xpxw.XPXWActivity;
+import cn.mhook.activity.xp.XpModuleAiActivity;
 import cn.mhook.mhook.R;
 
 public class MainFragment extends QMUIFragment {
@@ -76,16 +76,16 @@ public class MainFragment extends QMUIFragment {
                 RxActivityTool.skipActivity(getContext(), DumpActivity.class);
             }
         }));
-        datas.add(new MainItem("AI 分析", "AI生成Hook配置/自动改包", getResources().getColor(R.color.app_color_theme_1), R.drawable.comment, new View.OnClickListener() {
+        datas.add(new MainItem("应用分析", "AI生成Hook配置/自动改包", getResources().getColor(R.color.app_color_theme_1), R.drawable.comment, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 RxActivityTool.skipActivity(getContext(), AiActivity.class);
             }
         }));
-        datas.add(new MainItem("XP模块分析（待完善）", "分析Xposed模块的Hook行为", getResources().getColor(R.color.app_color_blue), R.drawable.xposed, new View.OnClickListener() {
+        datas.add(new MainItem("XP模块分析AI版", "分析XP模块APK并导入Hook配置", getResources().getColor(R.color.green), R.drawable.fx, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RxActivityTool.skipActivity(getContext(), XPXWActivity.class);
+                RxActivityTool.skipActivity(getContext(), XpModuleAiActivity.class);
             }
         }));
         datas.add(new MainItem("设置", "软件设置与关于", getResources().getColor(R.color.fab), R.drawable.setting, new View.OnClickListener() {

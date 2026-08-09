@@ -9,8 +9,8 @@ android {
         applicationId "cn.mhook.mhook"
         minSdkVersion 22
         targetSdkVersion 34
-        versionCode 17
-        versionName "1.4.4"
+        versionCode 18
+        versionName "1.4.5"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         ndk {
             // 设置支持的SO库架构
@@ -29,6 +29,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
     }
+}
+
+configurations.all {
+    exclude group: 'com.google.guava', module: 'listenablefuture'
 }
 
 dependencies {
@@ -61,4 +65,5 @@ dependencies {
     implementation 'eu.darken.rxshell:core:1.0.9'
     implementation 'eu.darken.rxshell:root:1.0.9'
     implementation 'me.weishu:free_reflection:2.2.0'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 }

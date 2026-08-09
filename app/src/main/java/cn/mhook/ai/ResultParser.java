@@ -3,6 +3,7 @@ package cn.mhook.ai;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -140,5 +141,32 @@ public class ResultParser {
         cfg.put("detail", detail == null || detail.isEmpty() ? "AI生成" : detail);
         cfg.put("hooks", parsed.getJSONArray("hooks"));
         return cfg;
+    }
+
+    /**
+     * 解析多个 saveHook 结果（XP 模块分析常用）。接受单个对象或对象数组。
+     */
+    public static List<JSONObject> parseHookApps(String text) throws Exception {
+        String json = extractJson(text);
+        if (json == null){
+            throw new Exception("未在 AI 输出中找到 ```json 代码块");
+        }
+        JSONArray arr = null;
+        try {
+            JSONObject single = JSONObject.parseObject(json);
+            arr = new JSONArray();
+            arr.add(single);
+        } catch (Throwable t) {
+            arr = JSONArray.parseArray(json);
+        }
+        if (arr == null || arr.isEmpty()){
+            throw new Exception("AI 结果为空");
+        }
+        List<JSONObject> out = new java.util.ArrayList<JSONObject>();
+        for (Object o : arr){
+            String s = (o instanceof JSONObject) ? ((JSONObject) o).toJSONString() : String.valueOf(o);
+            out.add(parseAndNormalize(s));
+        }
+        return out;
     }
 }

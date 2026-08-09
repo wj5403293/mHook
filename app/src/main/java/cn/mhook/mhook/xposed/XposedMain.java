@@ -11,7 +11,6 @@ import java.lang.reflect.Method;
 import cn.mhook.mhook.xposed.appxw.AppXWFX;
 import cn.mhook.mhook.xposed.dialog.Dialog;
 import cn.mhook.mhook.xposed.dump.StartDump;
-import cn.mhook.mhook.xposed.modulexw.XpXWFX;
 import cn.mhook.mhook.xposed.utils.H;
 import cn.mhook.mhook.xposed.utils.mHookCfg;
 import de.robv.android.xposed.IXposedHookLoadPackage;
@@ -20,7 +19,6 @@ import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
-import static cn.mhook.mhook.xposed.config.XpCfg.hasCfg;
 import static cn.mhook.mhook.xposed.utils.H.startupparam;
 import static cn.mhook.mhook.xposed.utils.mHookCfg.logDir;
 import static cn.mhook.mhook.xposed.utils.mHookCfg.mDir;
@@ -49,7 +47,7 @@ public class XposedMain implements IXposedHookLoadPackage, IXposedHookZygoteInit
         H.loadPackageParam = loadPackageParam;
         H.pkg = loadPackageParam.packageName;
         mHookCfg.init();
-        if (!RxFileTool.fileExists(mDir)&&!hasCfg()) return;
+        if (!RxFileTool.fileExists(mDir)) return;
         try { savaLog(); }catch (Throwable e){} //打印日志
         Dialog.init();
         try {
@@ -96,12 +94,6 @@ public class XposedMain implements IXposedHookLoadPackage, IXposedHookZygoteInit
             StartDump.init();
         }catch (Throwable e){
             Log.w("err","脱壳失败："+e.getMessage());
-        }
-
-        try {
-            new XpXWFX();
-        }catch (Throwable e){
-            Log.w("err","模块行为分析失败："+e.getMessage());
         }
 
         try {

@@ -102,6 +102,44 @@ public class AiPrompt {
         return sb.toString();
     }
 
+    /**
+     * XP 模块 APK 静态分析：系统提示 = 基础契约 + 模块提取格式说明 + 输出契约（多 app 数组）。
+     */
+    public static String buildModule(Context ctx, String apkName) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(build(ctx, "XP 模块 APK：" + (apkName == null ? "" : apkName)));
+        sb.append("\n\n【本任务：XP 模块 APK 静态分析 → 输出 Hook 配置】\n");
+        sb.append("下面会给你一份使用 dexlib2 从 XP 模块 APK 提取的文本，包含两类信息：\n");
+        sb.append("1. HOOK 行：格式为 \"HOOK api=findAndHookMethod pkg=目标应用包名 class=目标类名 method=方法名 cb=回调类名\"。\n");
+        sb.append("   其中 pkg 是模块通过 packageName.equals(...) 判断的目标应用包名；class/method 是模块要 hook 的类与方法；cb 是匿名回调类。\n");
+        sb.append("2. CALLBACK 行：\"### CALLBACK 类名\" 下是该回调方法的字节码，最后一行形如 \"setResult(boxed=Ljava/lang/Integer;(int=1))\"、\"setResult(int=0)\" 或 \"setResult(str=...)\"。\n");
+        sb.append("   setResult(...) 就是模块强制返回的字面量；boxed 表示装箱对象（Integer→int、Boolean→boolean、Long→long），str 表示字符串。\n\n");
+
+        sb.append("【你的任务】对每个 pkg，把所有能确定返回值的 setRet 项整理成配置。判定规则：\n");
+        sb.append("- 只输出 HOOK 行里存在且回调存在 setResult(常量) 的项；没有 setResult（side-effect，如只改字段/弹提示/改参数）的项不要输出成 setRet。\n");
+        sb.append("- setResult(?) 或涉及动态替换的（如 String.replace 后再 setResult）不要输出成 setRet。\n");
+        sb.append("- className 用 HOOK 行里的完整点分名；methodName 用 HOOK 行里的 method。\n");
+        sb.append("- 值转换：boxed=Ljava/lang/Integer;(int=N) → returnData \"N\" returnType \"I\"；boxed=Ljava/lang/Long;(wide=N) → returnData \"N\" returnType \"J\"；\n");
+        sb.append("   boxed=Ljava/lang/Boolean;(int=1) → returnData \"true\" returnType \"Z\"（int=0 为 \"false\"）；setResult(int=N) → returnData \"N\" returnType \"I\"；setResult(str=S) → returnData \"S\" returnType \"java.lang.String\"。\n");
+        sb.append("- 一个 pkg 下的同名类#同名方法重复注册只保留一个；若同一方法出现不同返回值，以最后一次 setResult 为准并在 detail 里注明。\n");
+        sb.append("- appPkg 用 HOOK 行里的 pkg；appName 用该 pkg 最简短可读的部分，detail 简要说明该应用被改了什么（如解锁VIP/关闭广告）。\n\n");
+
+        sb.append("【输出契约】必须且只能输出一个 ```json 代码块，内容是 saveHook 对象的数组（有几个应用就输出几个元素）：\n");
+        sb.append("[\n");
+        sb.append("  {\n");
+        sb.append("    \"action\": \"saveHook\",\n");
+        sb.append("    \"appPkg\": \"目标应用包名\",\n");
+        sb.append("    \"appName\": \"目标应用名称\",\n");
+        sb.append("    \"detail\": \"改了什么\",\n");
+        sb.append("    \"hooks\": [\n");
+        sb.append("      { \"hookType\": \"setRet\", \"className\": \"全限定类名\", \"methodName\": \"方法名\", \"paramsName\": [], \"returnType\": \"I\", \"returnData\": \"1\" }\n");
+        sb.append("    ]\n");
+        sb.append("  }\n");
+        sb.append("]\n");
+        sb.append("没有可输出的项时输出 []。严禁编造提取文本中不存在的类名/方法名/包名。\n");
+        return sb.toString();
+    }
+
     public static String buildFix(Context ctx, String appInfo, String requirement) {
         StringBuilder sb = new StringBuilder();
         sb.append("你是 mHook 的“AI 自动改包”执行器。目标：调用已接入的 MT 管理器 MCP 的 mt_apk_* 工具，对目标 APK 完成【定位→修改→构建签名 APK】，产出可直接安装使用的修改版 APK。\n\n");

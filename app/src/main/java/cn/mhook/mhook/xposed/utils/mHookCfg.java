@@ -6,17 +6,14 @@ public class mHookCfg {
 
     public static String mDir = "";
     public static String fixDir = "";
-    public static String xpCfgDir = "";
     public static String dumpDir = "";
     public static String SettingDir = "";
-    public static String mXpCfgDir = "/data/mHook/mHookApp/module.json";
     public static String logDir = "";
     public static String fixType = "";
 
     public static void init(){
         mDir =  mData.mDir+ H.pkg+"/";
         fixDir = mDir+"fix/mk.apk";
-        xpCfgDir = mDir+"module.json";
         dumpDir = mDir+"dump/";
         SettingDir = mDir+"Setting.json";
         logDir = mDir+"log.txt";

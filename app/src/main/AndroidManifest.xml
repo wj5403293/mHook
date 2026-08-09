@@ -55,11 +55,11 @@
             android:name="cn.mhook.activity.intro.IntroActivity"
             android:theme="@style/Theme.Intro" />
         <activity android:name="cn.mhook.activity.selectapp.SelectActivity" />
-        <activity android:name="cn.mhook.activity.xpxw.XPXWActivity" />
         <activity android:name="cn.mhook.activity.mkfix.MKFixActivity" />
         <activity android:name="cn.mhook.activity.dump.DumpActivity" />
         <activity android:name="cn.mhook.activity.ai.AiActivity" android:launchMode="singleTop" />
         <activity android:name="cn.mhook.activity.ai.McpSettingActivity" />
+        <activity android:name="cn.mhook.activity.xp.XpModuleAiActivity" />
 
         <provider
             android:name=".contentprovider.SuperContentProvider"
