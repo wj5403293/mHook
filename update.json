@@ -1,9 +1,9 @@
 {
-  "version": "2.1.8",
-  "name": "mhook_v2.1.8",
-  "notes": "修复过签包的兼容性",
-  "url": "https://github.com/xiamiya/mHook/releases/download/v2.1.8/mhook_v2.1.8.apk",
-  "size": 58560832,
-  "published_at": "2026-10-29T22:15:00Z",
-  "page": "https://github.com/xiamiya/mHook/releases/tag/v2.1.8"
+  "version": "2.1.9",
+  "name": "mhook_v2.1.9",
+  "notes": "沙箱脱壳适配网易易盾",
+  "url": "https://github.com/xiamiya/mHook/releases/download/v2.1.9/mhook_v2.1.9.apk",
+  "size": 58571236,
+  "published_at": "2026-11-07T11:31:45Z",
+  "page": "https://github.com/xiamiya/mHook/releases/tag/v2.1.9"
 }
